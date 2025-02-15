@@ -1,6 +1,6 @@
 const lat = process.env.LATITUDE;
 const lon = process.env.LONGITUDE;
-const locationLabel = process.env.LOCATION_LABEL;
+const location = process.env.LOCATION;
 
 if (!lat || !lon) {
   throw new Error(
@@ -19,4 +19,4 @@ if (!lat) {
   throw new Error("Please add a LOCATION_LABEL to your .env file.");
 }
 
-module.exports = { lat, lon, locationLabel };
+module.exports = { lat, lon, location };

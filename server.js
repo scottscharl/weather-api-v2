@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
-const { lat, lon } = require("./data/coordinates.js");
+const { lat, lon } = require("./data/env_variables.js");
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));

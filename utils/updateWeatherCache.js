@@ -5,7 +5,7 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
 const getWeather = require("./getWeather.js");
-const location = process.env.LOCATION_LABEL;
+const { location } = require("../data/env_variables.js");
 
 async function updateWeatherCache({ lat, lon }) {
   try {
