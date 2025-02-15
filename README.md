@@ -2,11 +2,11 @@
 
 Build a simple Express API to serve up weather info. for one location.
 
-This project uses the free tier for OpenWeatherAPI's Once Call API's free tier. You need to sign up for an API key, and then your weather server checks for new weather info every 5 mins. The data is cached so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
+This project uses the free tier for the OpenWeather Once Call API. You need to sign up for an API key, and then your weather server checks for new weather info every 5 mins. The data is cached so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
 
 ## Quickstart
 
-1. Generate an API key for OpenWeather's [One Call API v3.0]](https://openweathermap.org/api).
+1. Generate an API key for OpenWeather's [One Call API v3.0](https://openweathermap.org/api).
 2. Clone this repo.
 3. Get the latitude & longitude coordinates for your location from [Google Maps](https://maps.google.com).
    - Right-click on a place on the map
