@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather API Documentation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body class="bg-gray-950 text-gray-100 p-8 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+      <div class="space-y-8">
+        <!-- Header -->
+        <header
+          class="bg-gray-900 p-6 rounded-lg gap-4 flex flex-col border border-gray-800"
+        >
+          <div>
+            <h1 class="text-3xl font-bold mb-4 text-white">
+              Scotty's Simple Weather API
+            </h1>
+            <p class="text-gray-200 text-xl">
+              Real-time weather data and alerts with automatic 5-minute updates.
+            </p>
+          </div>
+          <section class="bg-gray-900 rounded-lg">
+            <ul class="list-disc list-inside space-y-2 text-gray-300">
+              <li>Data updates every 5 minutes</li>
+              <li>
+                Current weather conditions including temperature, humidity, and
+                wind speed
+              </li>
+              <li>Active weather alerts and advisories</li>
+            </ul>
+          </section>
+        </header>
+
+        <!-- Endpoints Section -->
+        <section class="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <h2 class="text-2xl font-semibold mb-6 text-white">Endpoints</h2>
+          <div class="space-y-6">
+            <!-- Simple API Endpoint -->
+            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <div class="flex items-center gap-2 mb-2">
+                <span
+                  class="bg-blue-600 text-white text-sm px-2 py-1 rounded font-medium"
+                  >GET</span
+                >
+                <code class="text-blue-400">/api</code>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Returns simplified weather data with essential fields only.
+              </p>
+              <div class="space-y-2">
+                <h3 class="text-lg font-medium text-white">
+                  Live Response Example:
+                </h3>
+                <div class="bg-gray-950 p-4 rounded-lg border border-gray-800">
+                  <pre
+                    hx-get="/api"
+                    hx-trigger="load"
+                    class="text-sm font-mono text-gray-200 overflow-x-auto"
+                  >
+Loading...</pre
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Full API Endpoint -->
+            <div
+              x-data="{ open: false }"
+              class="bg-gray-800 rounded-lg border border-gray-700"
+            >
+              <div
+                class="p-4 flex items-start justify-between cursor-pointer"
+                @click="open = !open"
+              >
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="bg-blue-600 text-white text-sm px-2 py-1 rounded font-medium"
+                      >GET</span
+                    >
+                    <code class="text-blue-400">/api/full</code>
+                  </div>
+                  <p class="text-gray-300">
+                    Returns complete weather data including all available
+                    fields.
+                  </p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 transform transition-transform duration-200"
+                  :class="{'rotate-180': open}"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+              <div
+                x-show="open"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform -translate-y-4"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform -translate-y-4"
+                class="p-4 pt-0"
+              >
+                <div class="space-y-2">
+                  <h3 class="text-lg font-medium text-white">
+                    Live Response Example:
+                  </h3>
+                  <div
+                    class="bg-gray-950 p-4 rounded-lg border border-gray-800"
+                  >
+                    <pre
+                      hx-get="/api/full"
+                      hx-trigger="load"
+                      class="text-sm font-mono text-gray-200 overflow-x-auto"
+                    >
+Loading...</pre
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      htmx.on("htmx:afterSwap", function (evt) {
+        if (evt.detail.target.innerHTML) {
+          try {
+            const jsonData = JSON.parse(evt.detail.target.innerHTML);
+            evt.detail.target.innerHTML = JSON.stringify(jsonData, null, 2);
+          } catch (e) {
+            console.error("Failed to parse JSON:", e);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
