@@ -12,11 +12,10 @@ async function getWeather({ lat, lon }) {
       `lon=${lon}`,
       `appid=${process.env.OPENWEATHER_KEY}`,
       `units=imperial`,
-      `exclude=minutely,alerts`, // Optional: exclude data we don't need
+      // `exclude=minutely,alerts`, // Optional: exclude data we don't need
     ].join("&");
 
     // console.log("Making request to:", baseUrl + queryParams);
-
     const res = await fetch(baseUrl + queryParams);
 
     if (!res.ok) {
@@ -33,15 +32,5 @@ async function getWeather({ lat, lon }) {
     throw error;
   }
 }
-
-// // Test with Washington, DC coordinates
-// getWeather(38.8951, -77.0364)
-//   .then((data) => {
-//     console.log("Weather data received:");
-//     console.log(JSON.stringify(data, null, 2));
-//   })
-//   .catch((err) => {
-//     console.error("Failed to get weather:", err);
-//   });
 
 module.exports = getWeather;

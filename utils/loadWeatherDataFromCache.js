@@ -5,11 +5,6 @@ const fs = require("fs");
 const CACHE_DIR = path.join(__dirname, "..", "cache");
 const CACHE_FILE = path.join(CACHE_DIR, "weatherData.json");
 
-// Ensure cache directory exists
-if (!fs.existsSync(CACHE_DIR)) {
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-}
-
 function loadWeatherDataFromCache() {
   try {
     const data = fs.readFileSync(CACHE_FILE, "utf8");
