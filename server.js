@@ -3,7 +3,7 @@ const path = require("path");
 dotenv.config({ path: path.resolve(__dirname, "./.env") });
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const cron = require("node-cron");
