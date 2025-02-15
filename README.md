@@ -14,9 +14,12 @@ This project uses the free tier for OpenWeatherAPI's Once Call API's free tier. 
 4. Add your API key, plus the coordinates, a location name, and an optional port to an .env file, like this:
 
 ```
-OPENWEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # your key
+# required
+OPENWEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # your API key
 LATITUDE=38.8977
 LONGITUDE=-77.0365
-LOCATION_LABEL="Washington, DC"
+LOCATION_LABEL="Washington, DC" # any text string
+
+# optional
 PORT=4000
 ```
