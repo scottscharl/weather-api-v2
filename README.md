@@ -6,11 +6,11 @@ This project uses the free tier for OpenWeatherAPI's Once Call API's free tier. 
 
 ## Quickstart
 
-1. Generate an API key for the One Call API v3.0 at [openweather.io/api](https://openweathermap.org/api)
-2. Clone this repo
+1. Generate an API key for OpenWeather's [One Call API v3.0]](https://openweathermap.org/api).
+2. Clone this repo.
 3. Get the latitude & longitude coordinates for your location from [Google Maps](https://maps.google.com).
-   - right-click on a place on the map
-   - click on the top item "XX.xxx, XX.xxx" to copy it to clickboard
+   - Right-click on a place on the map
+   - Click on the top item "XX.xxx, XX.xxx" to copy it to clickboard
 4. Add your API key, plus the coordinates, a location name, and an optional port to an .env file, like this:
 
 ```
