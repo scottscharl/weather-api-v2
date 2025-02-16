@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 const path = require("path");
 const cron = require("node-cron");
+const crypto = require("crypto");
 dotenv.config({ path: path.resolve(__dirname, "./.env") });
 const express = require("express");
 const app = express();
@@ -9,6 +10,16 @@ const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
 const { lat, lon } = require("./data/env_variables.js");
+const { authenticateApiKey } = require("./middleware/auth");
+
+// Check if API key is configured
+if (!process.env.API_KEY) {
+  console.log("Generating new API key...");
+  const apiKey = `sk_${crypto.randomBytes(32).toString("hex")}`;
+  console.log("Add this to your .env file:");
+  console.log(`API_KEY=${apiKey}`);
+  process.exit(1);
+}
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
@@ -29,10 +40,11 @@ cron.schedule("*/5 * * * *", async () => {
   }
 });
 
+// Add API key authentication to all /api routes
+app.use("/api", authenticateApiKey);
+
 app.get("/api/", async (req, res) => {
   try {
-    // get weather data by sending lat. & lon. to OpenWeatherAPI's One Call API 3.0
-
     const weatherData = loadWeatherDataFromCache();
     const simpleWeatherData = simplifyWeatherData(weatherData);
     res.setHeader("Content-Type", "application/json");
@@ -45,7 +57,6 @@ app.get("/api/", async (req, res) => {
 
 app.get("/api/full", async (req, res) => {
   try {
-    // get weather data by sending lat. & lon. to OpenWeatherAPI's One Call API 3.0
     const weatherData = loadWeatherDataFromCache();
     res.setHeader("Content-Type", "application/json");
     res.json(weatherData);
@@ -57,4 +68,6 @@ app.get("/api/full", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
+  console.log("API endpoints are now protected with API key authentication");
+  console.log("Include X-API-Key header in your requests");
 });
