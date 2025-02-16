@@ -1,8 +1,8 @@
 # Scott's Simple Weather API
 
-Build a simple Express API to serve up weather info. for one location.
+Deploy an Express.js API to serve up weather data for a location you define, for free!
 
-This project uses the free tier for the OpenWeather Once Call API. You need to sign up for an API key, and then your weather server checks for new weather info every 5 mins. The data is cached so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
+Your server caches the weather data for 5 minutes so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
 
 ## Quickstart
 
@@ -23,3 +23,5 @@ LOCATION_LABEL="Washington, DC" # any text string
 # optional
 PORT=4000
 ```
+
+5.  Deploy your server to a VPS or cloud and starting building notifications and adding data and automations to your other apps and websites.
