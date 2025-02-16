@@ -1,7 +1,7 @@
 {
   "timestamp": {
-    "display": "Sat, Feb 15, 2025, 8:35 PM EST",
-    "iso": "2025-02-16T01:35:00.000Z"
+    "display": "Sat, Feb 15, 2025, 9:00 PM EST",
+    "iso": "2025-02-16T02:00:00.000Z"
   },
   "data": {
     "lat": 38.8977,
@@ -9,139 +9,29 @@
     "timezone": "America/New_York",
     "timezone_offset": -18000,
     "current": {
-      "dt": 1739669700,
+      "dt": 1739671200,
       "sunrise": 1739620759,
       "sunset": 1739659528,
-      "temp": 37.26,
-      "feels_like": 37.26,
+      "temp": 37.18,
+      "feels_like": 37.18,
       "pressure": 1016,
       "humidity": 93,
-      "dew_point": 35.42,
+      "dew_point": 35.35,
       "uvi": 0,
       "clouds": 100,
-      "visibility": 4828,
-      "wind_speed": 1.01,
-      "wind_deg": 306,
-      "wind_gust": 1.01,
+      "visibility": 4023,
+      "wind_speed": 0,
+      "wind_deg": 0,
       "weather": [
         {
           "id": 701,
           "main": "Mist",
           "description": "mist",
           "icon": "50n"
-        },
-        {
-          "id": 501,
-          "main": "Rain",
-          "description": "moderate rain",
-          "icon": "10n"
         }
-      ],
-      "rain": {
-        "1h": 1.33
-      }
+      ]
     },
     "minutely": [
-      {
-        "dt": 1739669700,
-        "precipitation": 1.332
-      },
-      {
-        "dt": 1739669760,
-        "precipitation": 1.2386
-      },
-      {
-        "dt": 1739669820,
-        "precipitation": 1.1452
-      },
-      {
-        "dt": 1739669880,
-        "precipitation": 1.0518
-      },
-      {
-        "dt": 1739669940,
-        "precipitation": 0.9584
-      },
-      {
-        "dt": 1739670000,
-        "precipitation": 0.865
-      },
-      {
-        "dt": 1739670060,
-        "precipitation": 0.6928
-      },
-      {
-        "dt": 1739670120,
-        "precipitation": 0.5206
-      },
-      {
-        "dt": 1739670180,
-        "precipitation": 0.3484
-      },
-      {
-        "dt": 1739670240,
-        "precipitation": 0.1762
-      },
-      {
-        "dt": 1739670300,
-        "precipitation": 0
-      },
-      {
-        "dt": 1739670360,
-        "precipitation": 0
-      },
-      {
-        "dt": 1739670420,
-        "precipitation": 0.1708
-      },
-      {
-        "dt": 1739670480,
-        "precipitation": 0.2542
-      },
-      {
-        "dt": 1739670540,
-        "precipitation": 0.3376
-      },
-      {
-        "dt": 1739670600,
-        "precipitation": 0.421
-      },
-      {
-        "dt": 1739670660,
-        "precipitation": 0.4492
-      },
-      {
-        "dt": 1739670720,
-        "precipitation": 0.4774
-      },
-      {
-        "dt": 1739670780,
-        "precipitation": 0.5056
-      },
-      {
-        "dt": 1739670840,
-        "precipitation": 0.5338
-      },
-      {
-        "dt": 1739670900,
-        "precipitation": 0.562
-      },
-      {
-        "dt": 1739670960,
-        "precipitation": 0.4496
-      },
-      {
-        "dt": 1739671020,
-        "precipitation": 0.3372
-      },
-      {
-        "dt": 1739671080,
-        "precipitation": 0.2248
-      },
-      {
-        "dt": 1739671140,
-        "precipitation": 0.1124
-      },
       {
         "dt": 1739671200,
         "precipitation": 0
@@ -208,51 +98,51 @@
       },
       {
         "dt": 1739672160,
-        "precipitation": 0
+        "precipitation": 0.1122
       },
       {
         "dt": 1739672220,
-        "precipitation": 0
+        "precipitation": 0.1754
       },
       {
         "dt": 1739672280,
-        "precipitation": 0
+        "precipitation": 0.2386
       },
       {
         "dt": 1739672340,
-        "precipitation": 0
+        "precipitation": 0.3018
       },
       {
         "dt": 1739672400,
-        "precipitation": 0
+        "precipitation": 0.365
       },
       {
         "dt": 1739672460,
-        "precipitation": 0
+        "precipitation": 0.333
       },
       {
         "dt": 1739672520,
-        "precipitation": 0
+        "precipitation": 0.301
       },
       {
         "dt": 1739672580,
-        "precipitation": 0
+        "precipitation": 0.269
       },
       {
         "dt": 1739672640,
-        "precipitation": 0
+        "precipitation": 0.237
       },
       {
         "dt": 1739672700,
-        "precipitation": 0
+        "precipitation": 0.205
       },
       {
         "dt": 1739672760,
-        "precipitation": 0
+        "precipitation": 0.164
       },
       {
         "dt": 1739672820,
-        "precipitation": 0
+        "precipitation": 0.123
       },
       {
         "dt": 1739672880,
@@ -281,42 +171,116 @@
       {
         "dt": 1739673240,
         "precipitation": 0
+      },
+      {
+        "dt": 1739673300,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673360,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673420,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673480,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673540,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673600,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673660,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673720,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673780,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673840,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673900,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739673960,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674020,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674080,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674140,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674200,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674260,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674320,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674380,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674440,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674500,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674560,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674620,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674680,
+        "precipitation": 0
+      },
+      {
+        "dt": 1739674740,
+        "precipitation": 0
       }
     ],
     "hourly": [
       {
-        "dt": 1739667600,
-        "temp": 37.69,
-        "feels_like": 32.13,
-        "pressure": 1016,
-        "humidity": 94,
-        "dew_point": 36.12,
-        "uvi": 0,
-        "clouds": 100,
-        "visibility": 1196,
-        "wind_speed": 7.38,
-        "wind_deg": 174,
-        "wind_gust": 33.2,
-        "weather": [
-          {
-            "id": 501,
-            "main": "Rain",
-            "description": "moderate rain",
-            "icon": "10n"
-          }
-        ],
-        "pop": 1,
-        "rain": {
-          "1h": 1.63
-        }
-      },
-      {
         "dt": 1739671200,
-        "temp": 37.26,
-        "feels_like": 32.83,
+        "temp": 37.18,
+        "feels_like": 32.76,
         "pressure": 1016,
         "humidity": 93,
-        "dew_point": 35.42,
+        "dew_point": 35.35,
         "uvi": 0,
         "clouds": 100,
         "visibility": 4276,
@@ -335,11 +299,11 @@
       },
       {
         "dt": 1739674800,
-        "temp": 37.83,
-        "feels_like": 33.8,
+        "temp": 37.76,
+        "feels_like": 33.71,
         "pressure": 1016,
         "humidity": 94,
-        "dew_point": 36.27,
+        "dew_point": 36.19,
         "uvi": 0,
         "clouds": 100,
         "visibility": 594,
@@ -348,24 +312,21 @@
         "wind_gust": 28.74,
         "weather": [
           {
-            "id": 500,
-            "main": "Rain",
-            "description": "light rain",
-            "icon": "10n"
+            "id": 804,
+            "main": "Clouds",
+            "description": "overcast clouds",
+            "icon": "04n"
           }
         ],
-        "pop": 1,
-        "rain": {
-          "1h": 0.37
-        }
+        "pop": 0.8
       },
       {
         "dt": 1739678400,
-        "temp": 38.59,
-        "feels_like": 33.93,
+        "temp": 38.53,
+        "feels_like": 33.87,
         "pressure": 1015,
         "humidity": 96,
-        "dew_point": 37.54,
+        "dew_point": 37.49,
         "uvi": 0,
         "clouds": 100,
         "visibility": 534,
@@ -374,24 +335,24 @@
         "wind_gust": 28.3,
         "weather": [
           {
-            "id": 500,
+            "id": 501,
             "main": "Rain",
-            "description": "light rain",
+            "description": "moderate rain",
             "icon": "10n"
           }
         ],
         "pop": 1,
         "rain": {
-          "1h": 0.26
+          "1h": 1.33
         }
       },
       {
         "dt": 1739682000,
-        "temp": 39.34,
-        "feels_like": 35.17,
+        "temp": 39.31,
+        "feels_like": 35.11,
         "pressure": 1013,
         "humidity": 97,
-        "dew_point": 38.57,
+        "dew_point": 38.53,
         "uvi": 0,
         "clouds": 100,
         "visibility": 718,
@@ -413,11 +374,11 @@
       },
       {
         "dt": 1739685600,
-        "temp": 40.17,
-        "feels_like": 35.65,
+        "temp": 40.15,
+        "feels_like": 35.64,
         "pressure": 1010,
         "humidity": 98,
-        "dew_point": 39.65,
+        "dew_point": 39.63,
         "uvi": 0,
         "clouds": 100,
         "visibility": 781,
@@ -1425,6 +1386,29 @@
           }
         ],
         "pop": 0
+      },
+      {
+        "dt": 1739840400,
+        "temp": 33.71,
+        "feels_like": 25.61,
+        "pressure": 1022,
+        "humidity": 41,
+        "dew_point": 12.34,
+        "uvi": 0,
+        "clouds": 66,
+        "visibility": 10000,
+        "wind_speed": 10.49,
+        "wind_deg": 300,
+        "wind_gust": 26.75,
+        "weather": [
+          {
+            "id": 803,
+            "main": "Clouds",
+            "description": "broken clouds",
+            "icon": "04n"
+          }
+        ],
+        "pop": 0
       }
     ],
     "daily": [
@@ -1440,14 +1424,14 @@
           "day": 40.78,
           "min": 32.68,
           "max": 41.04,
-          "night": 38.59,
-          "eve": 38.39,
+          "night": 38.53,
+          "eve": 38.35,
           "morn": 32.72
         },
         "feels_like": {
           "day": 35.83,
-          "night": 33.93,
-          "eve": 32.99,
+          "night": 33.87,
+          "eve": 32.94,
           "morn": 26.78
         },
         "pressure": 1026,
@@ -1466,7 +1450,7 @@
         ],
         "clouds": 100,
         "pop": 1,
-        "rain": 11.04,
+        "rain": 11.74,
         "uvi": 1.51
       },
       {
@@ -1760,6 +1744,16 @@
         "start": 1739725200,
         "end": 1739768400,
         "description": "* WHAT...West winds 20 to 30 mph with gusts of 50 to 60 mph possible.\n\n* WHERE...Washington DC, and portions of central, northern, and\nsouthern Maryland, central and northern Virginia, and eastern West\nVirginia.\n\n* WHEN...From Sunday afternoon through Sunday evening.\n\n* IMPACTS...Damaging winds could blow down trees and power lines.\nPower outages are possible. Travel could be difficult, especially\nfor high profile vehicles.\n\n* ADDITIONAL DETAILS...The strongest wind gusts are expected Sunday\nafternoon. Wind gusts of 40 to 50 mph may linger at times through\nMonday.",
+        "tags": [
+          "Wind"
+        ]
+      },
+      {
+        "sender_name": "NWS Baltimore MD/Washington DC",
+        "event": "High Wind Warning",
+        "start": 1739718000,
+        "end": 1739761200,
+        "description": "* WHAT...West winds 20 to 30 mph with gusts of 50 to 60 mph expected.\n\n* WHERE...The District of Columbia, central, north central,\nnortheast, northern, and southern Maryland, and northern and\nnorthwest Virginia.\n\n* WHEN...From 10 AM to 10 PM EST Sunday.\n\n* IMPACTS...Damaging winds will blow down trees and power lines.\nWidespread power outages are expected. Travel will be difficult,\nespecially for high profile vehicles.\n\n* ADDITIONAL DETAILS...The strongest wind gusts are expected Sunday\nafternoon into Sunday evening. Wind gusts of 40 to 50 mph may\nlinger at times through Monday.",
         "tags": [
           "Wind"
         ]
