@@ -17,11 +17,12 @@ Your server caches the weather data for 5 minutes so you don't exceed the One Ca
 
 ```
 # required
-OPENWEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # your API key
 LATITUDE=38.8977
 LONGITUDE=-77.0365
-LOCATION_LABEL="Washington, DC" # any text string
-API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+LOCATION_LABEL="Washington, DC" # any text string\
+
+OPENWEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # your OpenWeather API key
+API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx # key other computers will use to access this server
 
 # optional
 PORT=4000
