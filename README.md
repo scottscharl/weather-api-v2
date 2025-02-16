@@ -10,7 +10,7 @@ Your server caches the weather data for 5 minutes so you don't exceed the One Ca
 2. Clone this repo.
 3. Get the latitude & longitude coordinates for your location from [Google Maps](https://maps.google.com).
    - Right-click on a place on the map
-   - Click on the top item "XX.xxx, XX.xxx" to copy it to clickboard
+   - Click on the top item `XX.xxx, XX.xxx` to copy it to clickboard
 4. Add your API key, plus the coordinates, a location name, and an optional port to an .env file, like this:
 
 ```
