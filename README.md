@@ -1,8 +1,10 @@
 # Scott's Simple Weather API
 
-Deploy an Express.js API to serve up weather data for a location you define.
+Quickly deploy an Express.js API to serve up weather data for a location you define.
 
 Your server caches the weather data for 5 minutes so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
+
+`npm start` creates an `API_KEY` in `.env` if one is not detected. This will be used to authenticate requests to `/api` adn `/api/full`.
 
 ## Quickstart
 
@@ -19,6 +21,7 @@ OPENWEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # your API key
 LATITUDE=38.8977
 LONGITUDE=-77.0365
 LOCATION_LABEL="Washington, DC" # any text string
+API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # optional
 PORT=4000
