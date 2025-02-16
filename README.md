@@ -1,6 +1,6 @@
 # Scott's Simple Weather API
 
-Deploy an Express.js API to serve up weather data for a location you define, for free!
+Deploy an Express.js API to serve up weather data for a location you define.
 
 Your server caches the weather data for 5 minutes so you don't exceed the One Call API's free tier limit of 1,000 requests per day.
 
