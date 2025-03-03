@@ -11,8 +11,16 @@ const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
 const { lat, lon } = require("./data/env_variables.js");
 const { authenticateApiKey } = require("./middleware/auth");
+const cors = require("cors");
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://your-production-domain.com"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "X-API-Key"],
+  })
+);
 
-// Check if API key is configured
+// Check if API key is configureds
 if (!process.env.API_KEY) {
   console.log("Generating new API key...");
   const apiKey = `sk_${crypto.randomBytes(32).toString("hex")}`;
