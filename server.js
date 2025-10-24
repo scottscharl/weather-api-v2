@@ -13,21 +13,9 @@ const { lat, lon } = require("./data/env_variables.js");
 const { authenticateApiKey } = require("./middleware/auth");
 const cors = require("cors");
 
-// Determine allowed origins based on environment
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5500",
-  // add eventual public facing URL here
-];
-
-// Add localhost:4000 if in development mode
-if (process.env.NODE_ENV === "development") {
-  allowedOrigins.push("http://localhost:4000");
-}
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "*", // allow all origins
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "X-API-Key"],
   })
