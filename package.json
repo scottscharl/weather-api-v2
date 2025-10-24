@@ -4,8 +4,8 @@
   "description": "get weather for a location",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js"
   },
   "author": "Scott Scharl",
   "license": "ISC",

@@ -12,19 +12,28 @@ const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
 const { lat, lon } = require("./data/env_variables.js");
 const { authenticateApiKey } = require("./middleware/auth");
 const cors = require("cors");
+
+// Determine allowed origins based on environment
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5500",
+  // add eventual public facing URL here
+];
+
+// Add localhost:4000 if in development mode
+if (process.env.NODE_ENV === "development") {
+  allowedOrigins.push("http://localhost:4000");
+}
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5500",
-      "https://your-production-domain.com",
-    ],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "X-API-Key"],
   })
 );
 
-// Check if API key is configureds
+// Check if API key is configured
 if (!process.env.API_KEY) {
   console.log("Generating new API key...");
   const apiKey = `sk_${crypto.randomBytes(32).toString("hex")}`;
@@ -50,6 +59,11 @@ cron.schedule("*/5 * * * *", async () => {
   } catch (err) {
     console.error("Cron job failed:", err);
   }
+});
+
+// Serve index.html at root
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Add API key authentication to all /api routes
@@ -78,8 +92,8 @@ app.get("/api/full", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server listening on port ${port}`);
   console.log("API endpoints are now protected with API key authentication");
   console.log("Include X-API-Key header in your requests");
 });

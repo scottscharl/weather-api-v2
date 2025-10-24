@@ -1,0 +1,5 @@
+{
+  "ignore": ["cache/*", "*.log", "node_modules/*"],
+  "watch": ["*.js", "utils/*", "middleware/*", "data/*"],
+  "ext": "js,json"
+}
