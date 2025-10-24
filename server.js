@@ -14,7 +14,11 @@ const { authenticateApiKey } = require("./middleware/auth");
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-production-domain.com"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5500",
+      "https://your-production-domain.com",
+    ],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "X-API-Key"],
   })
