@@ -3,313 +3,861 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Dashboard</title>
+    <title>Scott's Simple Weather API</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body
-    class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-gray-100 p-4 md:p-8"
-  >
-    <div class="max-w-7xl mx-auto">
-      <!-- Header -->
-      <header class="text-center mb-8 md:mb-12">
-        <h1
-          class="text-4xl md:text-5xl font-extralight tracking-widest text-white mb-3"
-        >
-          WEATHER
-        </h1>
-        <p class="text-lg md:text-xl text-gray-400 font-light" id="location">
-          Loading location...
-        </p>
-        <p class="text-xs md:text-sm text-gray-600 mt-2" id="lastUpdated">
-          Last updated: --
-        </p>
-      </header>
+    <style>
+      code,
+      pre {
+        font-family: "Courier New", Courier, monospace;
+      }
 
-      <!-- Current Weather -->
-      <div
-        class="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 mb-8 backdrop-blur-sm shadow-2xl"
-      >
-        <div
-          class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8"
-        >
-          <!-- Temperature Section -->
-          <div class="flex items-center gap-6">
-            <div class="relative group">
-              <img
-                id="currentIcon"
-                src=""
-                alt="Weather icon"
-                class="w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl cursor-help"
-              />
-              <div
-                class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10"
-              >
-                <span id="currentIconTooltip">Weather condition</span>
-                <div
-                  class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"
-                ></div>
-              </div>
-            </div>
-            <div>
-              <div
-                class="text-6xl md:text-8xl font-extralight text-white leading-none"
-                id="currentTemp"
-              >
-                --°
-              </div>
-              <div class="text-base md:text-lg text-gray-400 mt-2">
-                Feels like <span id="feelsLike">--°</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Weather Description -->
-          <div class="text-center md:text-right">
-            <div
-              class="text-2xl md:text-3xl font-light capitalize text-gray-200"
-              id="weatherDesc"
-            >
-              --
-            </div>
-            <div class="text-sm text-gray-500 mt-1" id="weatherMain">--</div>
-          </div>
-        </div>
-
-        <!-- Weather Details Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-            <div class="text-xs md:text-sm text-gray-500 mb-1">Humidity</div>
-            <div
-              class="text-xl md:text-2xl font-light text-white"
-              id="humidity"
-            >
-              --%
-            </div>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-            <div class="text-xs md:text-sm text-gray-500 mb-1">Wind Speed</div>
-            <div
-              class="text-xl md:text-2xl font-light text-white"
-              id="windSpeed"
-            >
-              -- mph
-            </div>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-            <div class="text-xs md:text-sm text-gray-500 mb-1">Pressure</div>
-            <div
-              class="text-xl md:text-2xl font-light text-white"
-              id="pressure"
-            >
-              -- hPa
-            </div>
-          </div>
-          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-            <div class="text-xs md:text-sm text-gray-500 mb-1">Visibility</div>
-            <div
-              class="text-xl md:text-2xl font-light text-white"
-              id="visibility"
-            >
-              -- mi
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 12 Hour Forecast -->
-      <div
-        class="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 backdrop-blur-sm shadow-2xl"
-      >
-        <h2
-          class="text-2xl md:text-3xl font-extralight tracking-wide text-white mb-6"
-        >
-          Next 12 Hours
-        </h2>
-        <div
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-          id="hourlyForecast"
-        >
-          <!-- Hourly cards will be inserted here -->
-        </div>
-      </div>
-
-      <!-- Loading Spinner -->
-      <div
-        id="loadingSpinner"
-        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-      >
-        <div class="text-center">
-          <div
-            class="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-400 mb-4"
-          ></div>
-          <p class="text-gray-300 text-lg">Loading weather data...</p>
-        </div>
-      </div>
-
-      <!-- Error Message -->
-      <div
-        id="errorMessage"
-        class="hidden fixed top-4 right-4 bg-red-900/90 border border-red-600 text-white px-6 py-4 rounded-lg shadow-2xl z-50"
-      >
-        <p class="font-semibold">Error loading weather data</p>
-        <p class="text-sm text-gray-300 mt-1" id="errorText">
-          Please check your API endpoint
-        </p>
-      </div>
-    </div>
-
+      /* Soft, muted gray color palette */
+      :root {
+        --slate-bg: #121212;
+        --slate-surface: #1e1e1e;
+        --slate-border: #3a3a3a;
+        --slate-accent: #6b9bd1;
+        --slate-accent-hover: #8fb3dc;
+        --slate-text: #d4d4d4;
+        --slate-text-muted: #9a9a9a;
+      }
+    </style>
     <script>
-      // API Configuration
-      const API_URL = "http://andre:4000/api/full";
-      const API_KEY =
-        "sk_32302a2b833e44b4b108ac67696736939ca383004cb3d0e5da34f37c293c5192"; // Replace with your actual API key
-
-      // Update interval (5 minutes in milliseconds)
-      const UPDATE_INTERVAL = 5 * 60 * 1000;
-
-      // Fetch and display weather data
-      async function fetchWeatherData() {
-        try {
-          const response = await fetch(API_URL, {
-            headers: {
-              "X-API-Key": API_KEY,
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "slate-bg": "#121212",
+              "slate-surface": "#1e1e1e",
+              "slate-border": "#3a3a3a",
+              "slate-accent": "#6b9bd1",
+              "slate-accent-hover": "#8fb3dc",
+              "slate-text": "#d4d4d4",
+              "slate-text-muted": "#9a9a9a",
             },
-          });
-          if (!response.ok)
-            throw new Error(
-              `Failed to fetch weather data: ${response.status} ${response.statusText}`
-            );
-
-          const result = await response.json();
-          const data = result.data;
-
-          updateCurrentWeather(data);
-          updateHourlyForecast(data);
-          updateLastUpdated(result.timestamp);
-          updatePageTitle(data);
-
-          hideLoading();
-        } catch (error) {
-          console.error("Error fetching weather:", error);
-          showError(error.message);
-          hideLoading();
-        }
-      }
-
-      function updateCurrentWeather(data) {
-        const current = data.current;
-        const location =
-          data.location || `${data.lat.toFixed(2)}°, ${data.lon.toFixed(2)}°`;
-
-        document.getElementById("location").textContent = location;
-        document.getElementById("currentTemp").textContent =
-          Math.round(current.temp) + "°";
-        document.getElementById("feelsLike").textContent =
-          Math.round(current.feels_like) + "°";
-        document.getElementById("weatherDesc").textContent =
-          current.weather[0].description;
-        document.getElementById("weatherMain").textContent =
-          current.weather[0].main;
-
-        const iconImg = document.getElementById("currentIcon");
-        iconImg.src = `https://openweathermap.org/img/wn/${current.weather[0].icon}@4x.png`;
-        iconImg.alt = current.weather[0].description;
-        document.getElementById("currentIconTooltip").textContent =
-          current.weather[0].description.charAt(0).toUpperCase() +
-          current.weather[0].description.slice(1);
-
-        document.getElementById("humidity").textContent =
-          current.humidity + "%";
-        document.getElementById("windSpeed").textContent =
-          current.wind_speed.toFixed(1) + " mph";
-        document.getElementById("pressure").textContent =
-          current.pressure + " hPa";
-        document.getElementById("visibility").textContent =
-          (current.visibility / 1609.34).toFixed(1) + " mi";
-      }
-
-      function updateHourlyForecast(data) {
-        const hourlyContainer = document.getElementById("hourlyForecast");
-        hourlyContainer.innerHTML = "";
-
-        // Get next 12 hours
-        const next12Hours = data.hourly.slice(1, 13);
-
-        next12Hours.forEach((hour) => {
-          const time = new Date(hour.dt * 1000);
-          const timeString = time.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            hour12: true,
-          });
-
-          const card = document.createElement("div");
-          card.className =
-            "bg-white/5 rounded-xl p-4 border border-white/5 text-center hover:bg-white/10 transition-colors";
-          card.innerHTML = `
-                    <div class="text-sm text-gray-400 mb-2">${timeString}</div>
-                    <div class="relative group inline-block">
-                      <img src="https://openweathermap.org/img/wn/${
-                        hour.weather[0].icon
-                      }@2x.png" 
-                           alt="${hour.weather[0].description}" 
-                           class="w-12 h-12 mx-auto mb-2 cursor-help">
-                      <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                        ${
-                          hour.weather[0].description.charAt(0).toUpperCase() +
-                          hour.weather[0].description.slice(1)
-                        }
-                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
-                      </div>
-                    </div>
-                    <div class="text-2xl font-light text-white mb-1">${Math.round(
-                      hour.temp
-                    )}°</div>
-                    <div class="text-xs text-gray-500 capitalize">${
-                      hour.weather[0].main
-                    }</div>
-                    <div class="text-xs text-gray-600 mt-2">
-                        <div>💧 ${hour.humidity}%</div>
-                        <div class="mt-1">💨 ${hour.wind_speed.toFixed(
-                          0
-                        )} mph</div>
-                    </div>
-                `;
-          hourlyContainer.appendChild(card);
-        });
-      }
-
-      function updatePageTitle(data) {
-        const location =
-          data.location || `${data.lat.toFixed(2)}°, ${data.lon.toFixed(2)}°`;
-        const temp = Math.round(data.current.temp);
-        const condition = data.current.weather[0].main;
-        document.title = `${temp}° ${condition} - ${location}`;
-      }
-
-      function updateLastUpdated(timestamp) {
-        document.getElementById(
-          "lastUpdated"
-        ).textContent = `Last updated: ${timestamp.display}`;
-      }
-
-      function hideLoading() {
-        document.getElementById("loadingSpinner").classList.add("hidden");
-      }
-
-      function showError(message) {
-        const errorDiv = document.getElementById("errorMessage");
-        document.getElementById("errorText").textContent = message;
-        errorDiv.classList.remove("hidden");
-        setTimeout(() => {
-          errorDiv.classList.add("hidden");
-        }, 5000);
-      }
-
-      // Initial load
-      fetchWeatherData();
-
-      // Set up auto-refresh every 5 minutes
-      setInterval(fetchWeatherData, UPDATE_INTERVAL);
+          },
+        },
+      };
     </script>
+  </head>
+  <body class="bg-slate-bg text-slate-text p-8 max-w-4xl mx-auto">
+    <header class="border-b-2 border-slate-accent pb-4 mb-4">
+      <div class="space-between-2 flex">
+        <svg
+          class="inline-block w-8 h-8 mr-2 align-text-bottom text-yellow-400"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="5" />
+          <line
+            x1="12"
+            y1="1"
+            x2="12"
+            y2="3"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="12"
+            y1="21"
+            x2="12"
+            y2="23"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="4.22"
+            y1="4.22"
+            x2="5.64"
+            y2="5.64"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="18.36"
+            y1="18.36"
+            x2="19.78"
+            y2="19.78"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="1"
+            y1="12"
+            x2="3"
+            y2="12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="21"
+            y1="12"
+            x2="23"
+            y2="12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="4.22"
+            y1="19.78"
+            x2="5.64"
+            y2="18.36"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="18.36"
+            y1="5.64"
+            x2="19.78"
+            y2="4.22"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        <h1 class="text-3xl font-bold mb-2 text-slate-text">
+          Scott's Simple Weather API
+        </h1>
+      </div>
+
+      <p class="text-lg text-slate-text-muted">
+        Quickly deploy an Express.js API to serve up weather data for any
+        location.
+      </p>
+    </header>
+
+    <main>
+      <section class="mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-surface border border-slate-border rounded p-4">
+            <div class="text-slate-accent mb-2 font-bold">
+              📍 Custom Locations
+            </div>
+            <p class="text-slate-text-muted text-sm">
+              Query any location with latitude/longitude parameters
+            </p>
+          </div>
+
+          <div class="bg-slate-surface border border-slate-border rounded p-4">
+            <div class="text-slate-accent mb-2 font-bold">🔒 API Key Auth</div>
+            <p class="text-slate-text-muted text-sm">
+              Secure endpoints with API key authentication
+            </p>
+          </div>
+
+          <div class="bg-slate-surface border border-slate-border rounded p-4">
+            <div class="text-slate-accent mb-2 font-bold">⚡ Smart Caching</div>
+            <p class="text-slate-text-muted text-sm">
+              5-minute cache to stay within free tier limits
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Requirements
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-slate-text-muted">
+          <li>
+            <img
+              src="https://cdn.simpleicons.org/nodedotjs/339933"
+              alt="Node.js"
+              class="inline-block w-5 h-5 mr-1 align-text-bottom"
+            />
+            <strong class="text-slate-text">Node.js 20.6.0+</strong> (required
+            for native .env file support)
+          </li>
+          <li>
+            <strong class="text-slate-text">OpenWeather API key</strong> (free
+            tier: 1,000 calls/day)
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Quickstart
+        </h2>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            1. Generate an OpenWeather API Key
+          </h3>
+          <p class="mb-2 text-slate-text-muted">
+            Sign up for
+            <a
+              href="https://openweathermap.org/api/one-call-3"
+              target="_blank"
+              class="underline text-slate-accent hover:text-slate-accent-hover"
+              >OpenWeather's One Call API v3.0</a
+            >
+            and generate your API key.
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            2. Clone the Repository
+          </h3>
+          <pre
+            class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto rounded"
+          ><code class="text-slate-text">git clone https://github.com/scottscharl/weather-api-v2.git
+cd weather-api-v2</code></pre>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            3. Get Your Coordinates
+          </h3>
+          <p class="mb-2 text-slate-text-muted">
+            <strong class="text-slate-text">Option 1:</strong> Use
+            <a
+              href="https://www.latlong.net/"
+              target="_blank"
+              class="underline text-slate-accent hover:text-slate-accent-hover"
+              >LatLong.net</a
+            >
+            - search for your city and copy the coordinates
+          </p>
+          <p class="mb-2 text-slate-text-muted">
+            <strong class="text-slate-text">Option 2:</strong> Right-click on a
+            place in Google Maps and click the coordinates to copy
+          </p>
+        </div>
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            4. Configure Your Environment
+          </h3>
+          <p class="mb-2 text-slate-text-muted">
+            Create a
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >.env</code
+            >
+            file in the project root:
+          </p>
+          <pre
+            class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto mb-4 rounded"
+          ><code class="text-slate-text"># Required
+LATITUDE=40.7128
+LONGITUDE=-74.0060
+LOCATION_LABEL="New York City"
+OPENWEATHER_KEY=your_openweather_key_here
+
+# Auto-generated on first run if not provided
+# API_KEY=
+
+# Optional
+PORT=4000
+NODE_ENV=development
+
+# CORS - Comma-separated allowed origins (optional)
+# Development: localhost auto-allowed | Production: all origins (*) if not set
+# ALLOWED_ORIGINS=https://yourdomain.com,https://app.yourdomain.com</code></pre>
+          <p class="mb-2 text-slate-text-muted">
+            Replace the values with your actual coordinates, location name, and
+            OpenWeather API key.
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            5. Install Dependencies and Start
+          </h3>
+          <pre
+            class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto mb-2 rounded"
+          ><code class="text-slate-text">npm install
+npm start</code></pre>
+          <p class="mb-2 text-slate-text-muted">
+            If an API key wasn't found in your
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >.env</code
+            >
+            file, the app will generate one and display it. Copy the generated
+            key, add it to your
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >.env</code
+            >
+            file, then restart the server.
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-2 text-slate-text">6. Deploy</h3>
+          <p class="mb-2 text-slate-text-muted">
+            Deploy your server to a VPS or cloud platform and start building
+            notifications, automations, and integrations with your apps and
+            websites.
+          </p>
+          <div
+            class="border-2 border-amber-500 p-4 bg-slate-surface rounded mt-3"
+          >
+            <p class="text-amber-200">
+              <strong class="text-amber-100">Security:</strong> Never commit
+              your
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-amber-300"
+                >.env</code
+              >
+              file. Use environment variables on your hosting platform. Keep
+              your
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-amber-300"
+                >API_KEY</code
+              >
+              secret and rotate it if compromised by generating a new one.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Cache Behavior
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-slate-text-muted">
+          <li>
+            <strong class="text-slate-text">Default location:</strong>
+            Automatically cached and refreshed every 5 minutes via cron job
+          </li>
+          <li>
+            <strong class="text-slate-text">Custom lat/lon requests:</strong>
+            Bypass cache and make fresh API calls to OpenWeather
+          </li>
+          <li>
+            <strong class="text-slate-text">Rate limit protection:</strong>
+            Caching keeps you under OpenWeather's 1,000 calls/day free tier
+            limit (288 cached calls/day for default location)
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          API Endpoints
+        </h2>
+
+        <div
+          class="border-2 border-slate-border p-4 mb-4 bg-slate-surface rounded"
+        >
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            <code
+              class="bg-slate-bg px-3 py-1 border border-slate-border rounded text-slate-accent"
+              >GET /api/</code
+            >
+          </h3>
+          <p class="mb-4 text-slate-text-muted">
+            Returns simplified weather data with essential fields only.
+          </p>
+
+          <h4 class="font-bold mb-2 text-slate-text">Fields Returned:</h4>
+          <ul
+            class="list-disc ml-6 mb-4 space-y-1 text-slate-text-muted text-sm"
+          >
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >location</code
+              >
+              - Location name
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >current.temp</code
+              >
+              - Current temperature
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >current.feels_like</code
+              >
+              - Feels like temperature
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >current.humidity</code
+              >
+              - Humidity percentage
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >current.wind_speed</code
+              >
+              - Wind speed
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >current.weather</code
+              >
+              - Weather description
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >forecast</code
+              >
+              - Simplified forecast array
+            </li>
+          </ul>
+
+          <h4 class="font-bold mt-4 mb-2 text-slate-text">
+            Query Parameters (Optional):
+          </h4>
+          <ul class="list-disc ml-6 mb-4 space-y-1 text-slate-text-muted">
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >lat</code
+              >
+              - Latitude (-90 to 90)
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >lon</code
+              >
+              - Longitude (-180 to 180)
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >location</code
+              >
+              - Custom location label
+            </li>
+          </ul>
+
+          <h4 class="font-bold mb-2 text-slate-text">Example Request:</h4>
+          <pre
+            class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto mb-3 rounded"
+          ><code class="text-slate-text">curl -H "X-API-Key: your-api-key" \
+  "http://your-server:4000/api/?lat=40.7128&lon=-74.0060&location=New%20York"</code></pre>
+
+          <h4 class="font-bold mb-2 text-slate-text">Example Response:</h4>
+          <pre
+            class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto rounded"
+          ><code class="text-slate-text">{
+  "location": "New York City",
+  "current": {
+    "temp": 72,
+    "feels_like": 70,
+    "humidity": 65,
+    "wind_speed": 8.5,
+    "weather": "Clear"
+  },
+  "forecast": [...]
+}</code></pre>
+        </div>
+
+        <div
+          class="border-2 border-slate-border p-4 mb-4 bg-slate-surface rounded"
+        >
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            <code
+              class="bg-slate-bg px-3 py-1 border border-slate-border rounded text-slate-accent"
+              >GET /api/full</code
+            >
+          </h3>
+          <p class="mb-4 text-slate-text-muted">
+            Returns complete weather data including all available fields from
+            OpenWeather API.
+          </p>
+
+          <h4 class="font-bold mb-2 text-slate-text">Fields Returned:</h4>
+          <ul
+            class="list-disc ml-6 mb-4 space-y-1 text-slate-text-muted text-sm"
+          >
+            <li>All simplified fields above</li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >uvi</code
+              >,
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >visibility</code
+              >,
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >pressure</code
+              >,
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >dew_point</code
+              >
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >sunrise</code
+              >/<code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >sunset</code
+              >
+              times
+            </li>
+            <li>
+              Detailed
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >hourly</code
+              >
+              and
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >daily</code
+              >
+              forecasts
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >alerts</code
+              >
+              (if any)
+            </li>
+            <li>And more...</li>
+          </ul>
+          <p class="text-slate-text-muted text-sm mb-4">
+            View complete field documentation on
+            <a
+              href="https://openweathermap.org/api/one-call-3#data"
+              target="_blank"
+              class="underline text-slate-accent hover:text-slate-accent-hover"
+            >
+              OpenWeather's docs</a
+            >
+            .
+          </p>
+
+          <h4 class="font-bold mt-4 mb-2 text-slate-text">
+            Query Parameters (Optional):
+          </h4>
+          <ul class="list-disc ml-6 mb-4 space-y-1 text-slate-text-muted">
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >lat</code
+              >
+              - Latitude (-90 to 90)
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >lon</code
+              >
+              - Longitude (-180 to 180)
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-slate-accent"
+                >location</code
+              >
+              - Custom location label
+            </li>
+          </ul>
+
+          <h4 class="font-bold mb-2 text-slate-text">Example Request:</h4>
+          <pre
+            class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto rounded"
+          ><code class="text-slate-text">curl -H "X-API-Key: your-api-key" \
+  "http://your-server:4000/api/full"</code></pre>
+        </div>
+
+        <div class="border-2 border-rose-500 p-4 bg-slate-surface rounded">
+          <p class="text-rose-200">
+            <strong class="text-rose-100">⚠️ WARNING:</strong> Using custom
+            <code
+              class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-rose-300"
+              >lat</code
+            >/<code
+              class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-rose-300"
+              >lon</code
+            >
+            parameters bypasses the cache and makes fresh API calls to
+            OpenWeather. This may count against your rate limits. Use the
+            default location when possible to benefit from caching.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Error Responses
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-slate-text-muted">
+          <li>
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >401 Unauthorized</code
+            >
+            - Missing or invalid
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >X-API-Key</code
+            >
+            header
+          </li>
+          <li>
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >400 Bad Request</code
+            >
+            - Invalid latitude or longitude values (specific error message will
+            indicate the exact issue)
+          </li>
+          <li>
+            <code
+              class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+              >500 Internal Server Error</code
+            >
+            - Server or OpenWeather API error
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Authentication
+        </h2>
+        <p class="mb-4 text-slate-text-muted">
+          All API endpoints require an API key. Include the
+          <code
+            class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+            >X-API-Key</code
+          >
+          header in your requests:
+        </p>
+        <pre
+          class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto mb-4 rounded"
+        ><code class="text-slate-text">curl -H "X-API-Key: your-api-key" http://your-server:4000/api/</code></pre>
+
+        <p class="mb-2 text-slate-text-muted">Or in JavaScript:</p>
+        <pre
+          class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto rounded"
+        ><code class="text-slate-text">fetch('http://your-server:4000/api/', {
+  headers: {
+    'X-API-Key': 'your-api-key'
+  }
+})
+  .then(res => res.json())
+  .then(data => console.log(data));</code></pre>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Security Best Practices
+        </h2>
+
+        <div class="border-2 border-rose-500 p-4 bg-slate-surface mb-4 rounded">
+          <p class="font-bold mb-2 text-rose-100">
+            ⚠️ CRITICAL SECURITY NOTES:
+          </p>
+          <ul class="list-disc ml-6 space-y-2 text-rose-200">
+            <li>
+              <strong class="text-rose-100"
+                >API_KEY is for server-to-server use only</strong
+              >
+              - Never expose it in client-side code, public repositories, or
+              browser applications
+            </li>
+            <li>
+              <strong class="text-rose-100">Use HTTPS in production</strong> -
+              Always deploy behind HTTPS to protect API keys in transit
+            </li>
+            <li>
+              <strong class="text-rose-100">Restrict CORS origins</strong> - Set
+              <code
+                class="bg-slate-bg px-2 py-1 border border-slate-border rounded text-rose-300"
+                >ALLOWED_ORIGINS</code
+              >
+              in production instead of allowing all origins (*)
+            </li>
+            <li>
+              <strong class="text-rose-100">Never commit .env files</strong> -
+              Add .env to .gitignore and use environment variables on your
+              hosting platform
+            </li>
+            <li>
+              <strong class="text-rose-100">Rotate compromised keys</strong> -
+              If your API_KEY is exposed, generate a new one immediately
+            </li>
+          </ul>
+        </div>
+
+        <h3 class="text-xl font-bold mb-2 mt-4 text-slate-text">
+          CORS Configuration
+        </h3>
+        <p class="mb-2 text-slate-text-muted">
+          Control which domains can access your API:
+        </p>
+        <pre
+          class="bg-slate-surface border-2 border-slate-border p-4 overflow-x-auto mb-2 rounded"
+        ><code class="text-slate-text"># In .env file
+ALLOWED_ORIGINS=https://yourdomain.com,https://app.yourdomain.com</code></pre>
+        <ul class="list-disc ml-6 space-y-2 text-slate-text-muted">
+          <li>
+            <strong class="text-slate-text">Development:</strong> Localhost
+            origins are automatically allowed
+          </li>
+          <li>
+            <strong class="text-slate-text"
+              >Production without ALLOWED_ORIGINS:</strong
+            >
+            All origins allowed (*) - not recommended
+          </li>
+          <li>
+            <strong class="text-slate-text"
+              >Production with ALLOWED_ORIGINS:</strong
+            >
+            Only specified domains allowed - recommended
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Monitoring & Health Checks
+        </h2>
+
+        <div
+          class="border-2 border-slate-border p-4 mb-4 bg-slate-surface rounded"
+        >
+          <h3 class="text-xl font-bold mb-2 text-slate-text">
+            <code
+              class="bg-slate-bg px-3 py-1 border border-slate-border rounded text-slate-accent"
+              >GET /health</code
+            >
+          </h3>
+          <p class="mb-2 text-slate-text-muted">
+            Health check endpoint (no authentication required). Returns server
+            status and cache information.
+          </p>
+
+          <h4 class="font-bold mb-2 text-slate-text">Example Request:</h4>
+          <pre
+            class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto mb-3 rounded"
+          ><code class="text-slate-text">curl http://your-server:4000/health</code></pre>
+
+          <h4 class="font-bold mb-2 text-slate-text">Example Response:</h4>
+          <pre
+            class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto rounded"
+          ><code class="text-slate-text">{
+  "status": "ok",
+  "timestamp": "2025-10-26T12:34:56.789Z",
+  "uptime": 3600,
+  "lastCacheUpdate": "2025-10-26T12:30:00.000Z",
+  "cacheAge": 296,
+  "error": null
+}</code></pre>
+          <p class="mt-2 text-slate-text-muted">
+            Use this endpoint for uptime monitoring and debugging cache issues.
+            Returns 503 status if there are cache errors.
+          </p>
+        </div>
+
+        <h3 class="text-xl font-bold mb-2 text-slate-text">
+          Cache File Location
+        </h3>
+        <p class="mb-2 text-slate-text-muted">
+          Weather data is cached in:
+          <code
+            class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+            >./data/weather_cache.json</code
+          >
+        </p>
+        <p class="mb-2 text-slate-text-muted">
+          Cache is automatically updated every 5 minutes. Check
+          <code
+            class="bg-slate-surface px-2 py-1 border border-slate-border rounded text-slate-accent"
+            >/health</code
+          >
+          endpoint to see last successful update time and any errors.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Use Cases
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-slate-text-muted">
+          <li>Build weather notifications and alerts</li>
+          <li>Add weather data to your dashboards and apps</li>
+          <li>Create automation triggers based on weather conditions</li>
+          <li>Display weather on digital signage</li>
+          <li>Integrate weather into smart home systems</li>
+          <li>
+            Query weather for multiple locations using latitude/longitude
+            parameters
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          Repository
+        </h2>
+        <p class="text-slate-text-muted">
+          View the source code on GitHub:
+          <a
+            href="https://github.com/scottscharl/weather-api-v2"
+            target="_blank"
+            class="underline text-slate-accent hover:text-slate-accent-hover"
+            >https://github.com/scottscharl/weather-api-v2</a
+          >
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2
+          class="text-2xl font-bold mb-4 border-b-2 border-slate-accent pb-2 text-slate-text"
+        >
+          License
+        </h2>
+        <p class="text-slate-text-muted">ISC License</p>
+      </section>
+    </main>
+
+    <footer
+      class="border-t-2 border-slate-accent pt-4 mt-8 text-center text-slate-text-muted"
+    >
+      <p>Built by Scott | Powered by OpenWeather API</p>
+    </footer>
   </body>
 </html>
