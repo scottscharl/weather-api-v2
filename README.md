@@ -51,10 +51,6 @@ All API endpoints require an API key. Include the `X-API-Key` header in your req
 curl -H "X-API-Key: your-api-key" http://your-server:4000/api/
 ```
 
-## Auto-Deploy Setup
-
-See [AUTO_DEPLOY_SETUP.md](AUTO_DEPLOY_SETUP.md) for instructions on setting up automatic deployments from GitHub using cron.
-
 ## License
 
 ISC
