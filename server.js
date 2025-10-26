@@ -10,6 +10,7 @@ const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
 const { lat, lon } = require("./data/env_variables.js");
+const locationLabel = process.env.LOCATION_LABEL || "Unknown Location";
 const { authenticateApiKey } = require("./middleware/auth");
 const cors = require("cors");
 
@@ -61,6 +62,8 @@ app.get("/api/", async (req, res) => {
   try {
     const weatherData = loadWeatherDataFromCache();
     const simpleWeatherData = simplifyWeatherData(weatherData);
+    // Add location label
+    simpleWeatherData.location = locationLabel;
     res.setHeader("Content-Type", "application/json");
     res.json(simpleWeatherData);
   } catch (err) {
@@ -72,6 +75,8 @@ app.get("/api/", async (req, res) => {
 app.get("/api/full", async (req, res) => {
   try {
     const weatherData = loadWeatherDataFromCache();
+    // Add location label
+    weatherData.location = locationLabel;
     res.setHeader("Content-Type", "application/json");
     res.json(weatherData);
   } catch (err) {

@@ -3,648 +3,313 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scott's Weather API Documentation</title>
+    <title>Weather Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
   </head>
   <body
-    class="bg-gradient-to-br from-gray-900 to-gray-950 text-gray-100 min-h-screen"
+    class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-gray-100 p-4 md:p-8"
   >
-    <div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="max-w-7xl mx-auto">
       <!-- Header -->
-      <header
-        class="text-center mb-16 text-lg text-gray-400 gap-6 flex flex-col"
-      >
-        <div>
-          <h1 class="text-4xl font-bold text-white mb-4 tracking-tight">
-            Scott's Simple Weather API
-          </h1>
-          <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-            Quickly deploy an Express.js API to serve up weather data for a
-            location you define. Your server caches the weather data for 5
-            minutes so you don't exceed the One Call API's free tier limit of
-            1,000 requests per day.
-          </p>
-        </div>
-        <a
-          class="bg-yellow-400/50 text-gray-200 px-3 py-1 rounded-lg font-medium w-fit mx-auto hover:bg-yellow-400/70 transition-colors"
-          href="https://github.com/scottscharl/weather-api-v2"
-          target="_blank"
+      <header class="text-center mb-8 md:mb-12">
+        <h1
+          class="text-4xl md:text-5xl font-extralight tracking-widest text-white mb-3"
         >
-          View on Github
-        </a>
+          WEATHER
+        </h1>
+        <p class="text-lg md:text-xl text-gray-400 font-light" id="location">
+          Loading location...
+        </p>
+        <p class="text-xs md:text-sm text-gray-600 mt-2" id="lastUpdated">
+          Last updated: --
+        </p>
       </header>
 
-      <!-- Features -->
-      <section class="mb-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30">
-            <div class="text-blue-400 mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
-                />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold mb-2">Complete Weather Data</h3>
-            <p class="text-gray-400">
-              Current conditions, forecasts, and weather alerts
-            </p>
-          </div>
-
-          <div class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30">
-            <div class="text-blue-400 mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold mb-2">Smart Caching</h3>
-            <p class="text-gray-400">
-              5-minute cache respects rate limits while keeping data current
-            </p>
-          </div>
-
-          <div class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30">
-            <div class="text-blue-400 mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold mb-2">API Key Auth</h3>
-            <p class="text-gray-400">
-              Secure endpoints with automatically generated API keys
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Quickstart -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold mb-6 text-center">Quickstart</h2>
-        <div class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30">
-          <ol class="space-y-4 text-gray-300">
-            <li class="flex gap-3">
-              <span class="text-blue-400 font-semibold flex-shrink-0">1.</span>
-              <div>
-                Generate an API key for
-                <a
-                  href="https://openweathermap.org/api/one-call-3"
-                  target="_blank"
-                  class="text-blue-400 hover:text-blue-300 underline"
-                  >OpenWeather's One Call API v3.0</a
-                >.
-              </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="text-blue-400 font-semibold flex-shrink-0">2.</span>
-              <div>Clone this repo.</div>
-            </li>
-            <li class="flex gap-3">
-              <span class="text-blue-400 font-semibold flex-shrink-0">3.</span>
-              <div>
-                <p class="mb-2">
-                  Get the latitude & longitude coordinates for your location
-                  from Google Maps.
-                </p>
-                <ul class="ml-4 space-y-1 text-gray-400 text-sm">
-                  <li>• Right-click on a place on the map</li>
-                  <li>
-                    • Click on the top item
-                    <code class="bg-gray-900/50 px-1 rounded"
-                      >XX.xxx, XX.xxx</code
-                    >
-                    to copy it to clipboard
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="text-blue-400 font-semibold flex-shrink-0">4.</span>
-              <div>
-                <p class="mb-2">
-                  Add your API key, plus the coordinates, a location name, and
-                  an optional port to an
-                  <code class="bg-gray-900/50 px-1 rounded">.env</code> file:
-                </p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-xs overflow-x-auto mt-2"
-                >
-                  <pre
-                    class="text-gray-300"
-                  ><span class="text-gray-500"># required</span>
-<span class="text-blue-400">LATITUDE</span>=<span class="text-yellow-400">38.8977</span>
-<span class="text-blue-400">LONGITUDE</span>=<span class="text-yellow-400">-77.0365</span>
-<span class="text-blue-400">LOCATION_LABEL</span>=<span class="text-green-400">"Washington, DC"</span> <span class="text-gray-500"># any text string</span>
-
-<span class="text-blue-400">OPENWEATHER_KEY</span>=<span class="text-green-400">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span> <span class="text-gray-500"># your OpenWeather API key</span>
-<span class="text-blue-400">API_KEY</span>=<span class="text-green-400">xxxxxxxxxxxxxxxxxxxxxxxxxxxx</span> <span class="text-gray-500"># key other computers will use to access this server</span>
-
-<span class="text-gray-500"># optional</span>
-<span class="text-blue-400">PORT</span>=<span class="text-yellow-400">4000</span>
-<span class="text-blue-400">NODE_ENV</span>=<span class="text-green-400">development</span> <span class="text-gray-500"># enables localhost:4000 CORS</span></pre>
-                </div>
-                <p class="text-gray-400 text-sm mt-2">
-                  Note:
-                  <code class="bg-gray-900/50 px-1 rounded">npm start</code>
-                  creates an
-                  <code class="bg-gray-900/50 px-1 rounded">API_KEY</code> in
-                  <code class="bg-gray-900/50 px-1 rounded">.env</code> if one
-                  is not detected.
-                </p>
-              </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="text-blue-400 font-semibold flex-shrink-0">5.</span>
-              <div>
-                Deploy your server to a VPS or cloud and start building
-                notifications and adding data and automations to your other apps
-                and websites.
-              </div>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <!-- Authentication -->
-      <section class="mb-12">
+      <!-- Current Weather -->
+      <div
+        class="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 mb-8 backdrop-blur-sm shadow-2xl"
+      >
         <div
-          class="bg-yellow-500/10 p-6 rounded-xl border border-yellow-500/20"
+          class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8"
         >
-          <div class="flex items-start gap-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-yellow-400 flex-shrink-0 mt-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+          <!-- Temperature Section -->
+          <div class="flex items-center gap-6">
+            <div class="relative group">
+              <img
+                id="currentIcon"
+                src=""
+                alt="Weather icon"
+                class="w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl cursor-help"
               />
-            </svg>
-            <div>
-              <h3 class="text-xl font-semibold mb-2 text-yellow-300">
-                Authentication Required
-              </h3>
-              <p class="text-gray-300 mb-3">
-                All API endpoints require an API key. Include the
-                <code class="bg-gray-900/50 px-2 py-1 rounded text-yellow-400"
-                  >X-API-Key</code
-                >
-                header in your requests.
-              </p>
               <div
-                class="bg-gray-900/50 rounded-lg p-3 font-mono text-sm text-gray-300"
+                class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10"
               >
-                X-API-Key: your-api-key-here
+                <span id="currentIconTooltip">Weather condition</span>
+                <div
+                  class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div
+                class="text-6xl md:text-8xl font-extralight text-white leading-none"
+                id="currentTemp"
+              >
+                --°
+              </div>
+              <div class="text-base md:text-lg text-gray-400 mt-2">
+                Feels like <span id="feelsLike">--°</span>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- How to Use with Tabs -->
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-8 text-center">How to Use</h2>
-
-        <div
-          x-data="{ activeTab: 'curl' }"
-          class="bg-gray-800/30 rounded-xl border border-gray-700/30"
-        >
-          <!-- Tab Headers -->
-          <div class="flex border-b border-gray-700/30">
-            <button
-              @click="activeTab = 'curl'"
-              :class="activeTab === 'curl' ? 'bg-gray-700/50 text-white' : 'text-gray-400 hover:text-gray-200'"
-              class="px-6 py-3 font-medium transition-colors"
-            >
-              cURL
-            </button>
-            <button
-              @click="activeTab = 'js'"
-              :class="activeTab === 'js' ? 'bg-gray-700/50 text-white' : 'text-gray-400 hover:text-gray-200'"
-              class="px-6 py-3 font-medium transition-colors"
-            >
-              JavaScript
-            </button>
-            <button
-              @click="activeTab = 'python'"
-              :class="activeTab === 'python' ? 'bg-gray-700/50 text-white' : 'text-gray-400 hover:text-gray-200'"
-              class="px-6 py-3 font-medium transition-colors"
-            >
-              Python
-            </button>
-          </div>
-
-          <!-- Tab Content -->
-          <div class="p-6">
-            <!-- cURL Tab -->
-            <div x-show="activeTab === 'curl'" class="space-y-4">
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Simplified data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto"
-                >
-                  curl -H "X-API-Key: your-api-key" http://your-server:4000/api/
-                </div>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Full data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto"
-                >
-                  curl -H "X-API-Key: your-api-key"
-                  http://your-server:4000/api/full
-                </div>
-              </div>
-            </div>
-
-            <!-- JavaScript Tab -->
-            <div x-show="activeTab === 'js'" class="space-y-4">
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Simplified data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm overflow-x-auto"
-                >
-                  <pre
-                    class="text-gray-300"
-                  ><span class="text-purple-400">async function</span> <span class="text-yellow-400">getWeather</span>() {
-  <span class="text-purple-400">try</span> {
-    <span class="text-purple-400">const</span> response = <span class="text-purple-400">await</span> <span class="text-purple-400">fetch</span>(<span class="text-green-400">'http://your-server:4000/api/'</span>, {
-      <span class="text-blue-400">headers</span>: {
-        <span class="text-green-400">'X-API-Key'</span>: <span class="text-green-400">'your-api-key'</span>
-      }
-    });
-    <span class="text-purple-400">const</span> data = <span class="text-purple-400">await</span> response.<span class="text-purple-400">json</span>();
-    console.<span class="text-purple-400">log</span>(data);
-  } <span class="text-purple-400">catch</span> (err) {
-    console.<span class="text-purple-400">error</span>(err);
-  }
-}</pre>
-                </div>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Full data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm overflow-x-auto"
-                >
-                  <pre
-                    class="text-gray-300"
-                  ><span class="text-purple-400">async function</span> <span class="text-yellow-400">getFullWeather</span>() {
-  <span class="text-purple-400">try</span> {
-    <span class="text-purple-400">const</span> response = <span class="text-purple-400">await</span> <span class="text-purple-400">fetch</span>(<span class="text-green-400">'http://your-server:4000/api/full'</span>, {
-      <span class="text-blue-400">headers</span>: {
-        <span class="text-green-400">'X-API-Key'</span>: <span class="text-green-400">'your-api-key'</span>
-      }
-    });
-    <span class="text-purple-400">const</span> data = <span class="text-purple-400">await</span> response.<span class="text-purple-400">json</span>();
-    console.<span class="text-purple-400">log</span>(data);
-  } <span class="text-purple-400">catch</span> (err) {
-    console.<span class="text-purple-400">error</span>(err);
-  }
-}</pre>
-                </div>
-              </div>
-            </div>
-
-            <!-- Python Tab -->
-            <div x-show="activeTab === 'python'" class="space-y-4">
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Simplified data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm overflow-x-auto"
-                >
-                  <pre
-                    class="text-gray-300"
-                  ><span class="text-purple-400">import</span> requests
-
-headers = {<span class="text-green-400">'X-API-Key'</span>: <span class="text-green-400">'your-api-key'</span>}
-response = requests.<span class="text-blue-400">get</span>(
-    <span class="text-green-400">'http://your-server:4000/api/'</span>, 
-    headers=headers
-)
-data = response.<span class="text-blue-400">json</span>()
-<span class="text-purple-400">print</span>(data)</pre>
-                </div>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm mb-2">Full data:</p>
-                <div
-                  class="bg-gray-950 rounded-lg p-4 font-mono text-sm overflow-x-auto"
-                >
-                  <pre
-                    class="text-gray-300"
-                  ><span class="text-purple-400">import</span> requests
-
-headers = {<span class="text-green-400">'X-API-Key'</span>: <span class="text-green-400">'your-api-key'</span>}
-response = requests.<span class="text-blue-400">get</span>(
-    <span class="text-green-400">'http://your-server:4000/api/full'</span>, 
-    headers=headers
-)
-data = response.<span class="text-blue-400">json</span>()
-<span class="text-purple-400">print</span>(data)</pre>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Endpoints -->
-      <section class="space-y-8 mb-16">
-        <h2 class="text-2xl font-bold mb-8 text-center">API Endpoints</h2>
-
-        <!-- Simple Endpoint -->
-        <div class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30">
-          <div class="flex items-center gap-3 mb-4">
-            <span
-              class="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm font-medium"
-              >GET</span
-            >
-            <code class="text-blue-400 font-mono text-lg">/api/</code>
-          </div>
-          <p class="text-gray-400 mb-6">
-            Returns simplified weather data with essential fields only.
-          </p>
-          <div class="bg-gray-900/50 rounded-lg p-3 mb-3">
-            <p class="text-gray-400 text-sm mb-1">Example Response:</p>
-          </div>
-          <div
-            class="bg-gray-950 rounded-lg p-4 font-mono text-xs overflow-x-auto"
-          >
-            <pre class="text-gray-300">{
-  <span class="text-blue-400">"timestamp"</span>: {
-    <span class="text-blue-400">"display"</span>: <span class="text-green-400">"Thu, Oct 23, 2025, 10:50 PM EST"</span>,
-    <span class="text-blue-400">"iso"</span>: <span class="text-green-400">"2025-10-24T02:50:01.000Z"</span>
-  },
-  <span class="text-blue-400">"data"</span>: {
-    <span class="text-blue-400">"current"</span>: {
-      <span class="text-blue-400">"temp"</span>: <span class="text-yellow-400">7.03</span>,
-      <span class="text-blue-400">"feels_like"</span>: <span class="text-yellow-400">-4.5</span>,
-      <span class="text-blue-400">"humidity"</span>: <span class="text-yellow-400">71</span>,
-      <span class="text-blue-400">"wind_speed"</span>: <span class="text-yellow-400">6.91</span>,
-      <span class="text-blue-400">"weather"</span>: {
-        <span class="text-blue-400">"description"</span>: <span class="text-green-400">"few clouds"</span>
-      }
-    },
-    <span class="text-blue-400">"alerts"</span>: []
-  }
-}</pre>
-          </div>
-        </div>
-
-        <!-- Full Endpoint -->
-        <div
-          x-data="{ open: false }"
-          class="bg-gray-800/30 p-6 rounded-xl border border-gray-700/30"
-        >
-          <div
-            class="flex items-center justify-between cursor-pointer"
-            @click="open = !open"
-          >
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-4">
-                <span
-                  class="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm font-medium"
-                  >GET</span
-                >
-                <code class="text-blue-400 font-mono text-lg">/api/full</code>
-              </div>
-              <p class="text-gray-400">
-                Returns complete weather data including all available fields
-                from the cache.
-              </p>
-            </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-gray-400 transform transition-transform duration-200 flex-shrink-0 ml-4"
-              :class="{'rotate-180': open}"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-
-          <div
-            x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 transform -translate-y-4"
-            x-transition:enter-end="opacity-100 transform translate-y-0"
-            class="mt-6"
-          >
-            <div class="bg-gray-900/50 rounded-lg p-3 mb-3">
-              <p class="text-gray-400 text-sm mb-1">Example Response:</p>
-            </div>
+          <!-- Weather Description -->
+          <div class="text-center md:text-right">
             <div
-              class="bg-gray-950 rounded-lg p-4 font-mono text-xs overflow-x-auto max-h-96 overflow-y-auto"
+              class="text-2xl md:text-3xl font-light capitalize text-gray-200"
+              id="weatherDesc"
             >
-              <pre class="text-gray-300">{
-  <span class="text-blue-400">"timestamp"</span>: {
-    <span class="text-blue-400">"display"</span>: <span class="text-green-400">"Thu, Oct 23, 2025, 10:50 PM EST"</span>,
-    <span class="text-blue-400">"iso"</span>: <span class="text-green-400">"2025-10-24T02:50:01.000Z"</span>
-  },
-  <span class="text-blue-400">"data"</span>: {
-    <span class="text-blue-400">"lat"</span>: <span class="text-yellow-400">42.4997</span>,
-    <span class="text-blue-400">"lon"</span>: <span class="text-yellow-400">-83.1474</span>,
-    <span class="text-blue-400">"timezone"</span>: <span class="text-green-400">"America/Detroit"</span>,
-    <span class="text-blue-400">"timezone_offset"</span>: <span class="text-yellow-400">-18000</span>,
-    <span class="text-blue-400">"current"</span>: {
-      <span class="text-blue-400">"dt"</span>: <span class="text-yellow-400">1729737001</span>,
-      <span class="text-blue-400">"sunrise"</span>: <span class="text-yellow-400">1729681493</span>,
-      <span class="text-blue-400">"sunset"</span>: <span class="text-yellow-400">1729720104</span>,
-      <span class="text-blue-400">"temp"</span>: <span class="text-yellow-400">7.03</span>,
-      <span class="text-blue-400">"feels_like"</span>: <span class="text-yellow-400">-4.5</span>,
-      <span class="text-blue-400">"pressure"</span>: <span class="text-yellow-400">1034</span>,
-      <span class="text-blue-400">"humidity"</span>: <span class="text-yellow-400">71</span>,
-      <span class="text-blue-400">"dew_point"</span>: <span class="text-yellow-400">0.39</span>,
-      <span class="text-blue-400">"uvi"</span>: <span class="text-yellow-400">0</span>,
-      <span class="text-blue-400">"clouds"</span>: <span class="text-yellow-400">20</span>,
-      <span class="text-blue-400">"visibility"</span>: <span class="text-yellow-400">10000</span>,
-      <span class="text-blue-400">"wind_speed"</span>: <span class="text-yellow-400">6.91</span>,
-      <span class="text-blue-400">"wind_deg"</span>: <span class="text-yellow-400">240</span>,
-      <span class="text-blue-400">"weather"</span>: [
-        {
-          <span class="text-blue-400">"id"</span>: <span class="text-yellow-400">801</span>,
-          <span class="text-blue-400">"main"</span>: <span class="text-green-400">"Clouds"</span>,
-          <span class="text-blue-400">"description"</span>: <span class="text-green-400">"few clouds"</span>,
-          <span class="text-blue-400">"icon"</span>: <span class="text-green-400">"02n"</span>
-        }
-      ]
-    },
-    <span class="text-blue-400">"minutely"</span>: [
-      {
-        <span class="text-blue-400">"dt"</span>: <span class="text-yellow-400">1729737060</span>,
-        <span class="text-blue-400">"precipitation"</span>: <span class="text-yellow-400">0</span>
-      },
-      <span class="text-gray-500">// ... 60 entries total</span>
-    ],
-    <span class="text-blue-400">"hourly"</span>: [
-      {
-        <span class="text-blue-400">"dt"</span>: <span class="text-yellow-400">1729735200</span>,
-        <span class="text-blue-400">"temp"</span>: <span class="text-yellow-400">7.03</span>,
-        <span class="text-blue-400">"feels_like"</span>: <span class="text-yellow-400">-4.5</span>,
-        <span class="text-blue-400">"pressure"</span>: <span class="text-yellow-400">1034</span>,
-        <span class="text-blue-400">"humidity"</span>: <span class="text-yellow-400">71</span>,
-        <span class="text-blue-400">"dew_point"</span>: <span class="text-yellow-400">0.39</span>,
-        <span class="text-blue-400">"uvi"</span>: <span class="text-yellow-400">0</span>,
-        <span class="text-blue-400">"clouds"</span>: <span class="text-yellow-400">20</span>,
-        <span class="text-blue-400">"visibility"</span>: <span class="text-yellow-400">10000</span>,
-        <span class="text-blue-400">"wind_speed"</span>: <span class="text-yellow-400">6.91</span>,
-        <span class="text-blue-400">"wind_deg"</span>: <span class="text-yellow-400">240</span>,
-        <span class="text-blue-400">"wind_gust"</span>: <span class="text-yellow-400">8.5</span>,
-        <span class="text-blue-400">"weather"</span>: [
-          {
-            <span class="text-blue-400">"id"</span>: <span class="text-yellow-400">801</span>,
-            <span class="text-blue-400">"main"</span>: <span class="text-green-400">"Clouds"</span>,
-            <span class="text-blue-400">"description"</span>: <span class="text-green-400">"few clouds"</span>,
-            <span class="text-blue-400">"icon"</span>: <span class="text-green-400">"02n"</span>
-          }
-        ],
-        <span class="text-blue-400">"pop"</span>: <span class="text-yellow-400">0</span>
-      },
-      <span class="text-gray-500">// ... 48 entries total</span>
-    ],
-    <span class="text-blue-400">"daily"</span>: [
-      {
-        <span class="text-blue-400">"dt"</span>: <span class="text-yellow-400">1729699200</span>,
-        <span class="text-blue-400">"sunrise"</span>: <span class="text-yellow-400">1729681493</span>,
-        <span class="text-blue-400">"sunset"</span>: <span class="text-yellow-400">1729720104</span>,
-        <span class="text-blue-400">"moonrise"</span>: <span class="text-yellow-400">1729716600</span>,
-        <span class="text-blue-400">"moonset"</span>: <span class="text-yellow-400">1729684500</span>,
-        <span class="text-blue-400">"moon_phase"</span>: <span class="text-yellow-400">0.68</span>,
-        <span class="text-blue-400">"summary"</span>: <span class="text-green-400">"Expect partly cloudy weather"</span>,
-        <span class="text-blue-400">"temp"</span>: {
-          <span class="text-blue-400">"day"</span>: <span class="text-yellow-400">12.5</span>,
-          <span class="text-blue-400">"min"</span>: <span class="text-yellow-400">5.2</span>,
-          <span class="text-blue-400">"max"</span>: <span class="text-yellow-400">14.8</span>,
-          <span class="text-blue-400">"night"</span>: <span class="text-yellow-400">7.3</span>,
-          <span class="text-blue-400">"eve"</span>: <span class="text-yellow-400">10.1</span>,
-          <span class="text-blue-400">"morn"</span>: <span class="text-yellow-400">6.4</span>
-        },
-        <span class="text-blue-400">"feels_like"</span>: {
-          <span class="text-blue-400">"day"</span>: <span class="text-yellow-400">8.2</span>,
-          <span class="text-blue-400">"night"</span>: <span class="text-yellow-400">3.1</span>,
-          <span class="text-blue-400">"eve"</span>: <span class="text-yellow-400">6.5</span>,
-          <span class="text-blue-400">"morn"</span>: <span class="text-yellow-400">2.8</span>
-        },
-        <span class="text-blue-400">"pressure"</span>: <span class="text-yellow-400">1034</span>,
-        <span class="text-blue-400">"humidity"</span>: <span class="text-yellow-400">65</span>,
-        <span class="text-blue-400">"dew_point"</span>: <span class="text-yellow-400">4.2</span>,
-        <span class="text-blue-400">"wind_speed"</span>: <span class="text-yellow-400">7.2</span>,
-        <span class="text-blue-400">"wind_deg"</span>: <span class="text-yellow-400">245</span>,
-        <span class="text-blue-400">"wind_gust"</span>: <span class="text-yellow-400">9.8</span>,
-        <span class="text-blue-400">"weather"</span>: [
-          {
-            <span class="text-blue-400">"id"</span>: <span class="text-yellow-400">801</span>,
-            <span class="text-blue-400">"main"</span>: <span class="text-green-400">"Clouds"</span>,
-            <span class="text-blue-400">"description"</span>: <span class="text-green-400">"few clouds"</span>,
-            <span class="text-blue-400">"icon"</span>: <span class="text-green-400">"02d"</span>
-          }
-        ],
-        <span class="text-blue-400">"clouds"</span>: <span class="text-yellow-400">20</span>,
-        <span class="text-blue-400">"pop"</span>: <span class="text-yellow-400">0</span>,
-        <span class="text-blue-400">"uvi"</span>: <span class="text-yellow-400">2.5</span>
-      },
-      <span class="text-gray-500">// ... 8 entries total</span>
-    ],
-    <span class="text-blue-400">"alerts"</span>: []
-  }
-}</pre>
+              --
+            </div>
+            <div class="text-sm text-gray-500 mt-1" id="weatherMain">--</div>
+          </div>
+        </div>
+
+        <!-- Weather Details Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+            <div class="text-xs md:text-sm text-gray-500 mb-1">Humidity</div>
+            <div
+              class="text-xl md:text-2xl font-light text-white"
+              id="humidity"
+            >
+              --%
+            </div>
+          </div>
+          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+            <div class="text-xs md:text-sm text-gray-500 mb-1">Wind Speed</div>
+            <div
+              class="text-xl md:text-2xl font-light text-white"
+              id="windSpeed"
+            >
+              -- mph
+            </div>
+          </div>
+          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+            <div class="text-xs md:text-sm text-gray-500 mb-1">Pressure</div>
+            <div
+              class="text-xl md:text-2xl font-light text-white"
+              id="pressure"
+            >
+              -- hPa
+            </div>
+          </div>
+          <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+            <div class="text-xs md:text-sm text-gray-500 mb-1">Visibility</div>
+            <div
+              class="text-xl md:text-2xl font-light text-white"
+              id="visibility"
+            >
+              -- mi
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Error Responses -->
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-8 text-center">Error Responses</h2>
-        <div class="space-y-4">
-          <div class="bg-red-500/10 p-4 rounded-xl border border-red-500/20">
-            <div class="flex items-start gap-3">
-              <span class="text-red-400 font-semibold">401</span>
-              <div class="flex-1">
-                <p class="text-gray-300 font-medium mb-2">Unauthorized</p>
-                <p class="text-gray-400 text-sm mb-2">
-                  Missing or invalid API key
-                </p>
-                <div
-                  class="bg-gray-950 rounded-lg p-3 font-mono text-xs text-gray-300"
-                >
-                  { "error": "Unauthorized: Invalid or missing API key" }
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-red-500/10 p-4 rounded-xl border border-red-500/20">
-            <div class="flex items-start gap-3">
-              <span class="text-red-400 font-semibold">500</span>
-              <div class="flex-1">
-                <p class="text-gray-300 font-medium mb-2">
-                  Internal Server Error
-                </p>
-                <p class="text-gray-400 text-sm mb-2">
-                  Server error processing request
-                </p>
-                <div
-                  class="bg-gray-950 rounded-lg p-3 font-mono text-xs text-gray-300"
-                >
-                  "Error processing request: [error message]"
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- 12 Hour Forecast -->
+      <div
+        class="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 backdrop-blur-sm shadow-2xl"
+      >
+        <h2
+          class="text-2xl md:text-3xl font-extralight tracking-wide text-white mb-6"
+        >
+          Next 12 Hours
+        </h2>
+        <div
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+          id="hourlyForecast"
+        >
+          <!-- Hourly cards will be inserted here -->
         </div>
-      </section>
+      </div>
 
-      <!-- Footer -->
-      <footer class="text-center text-gray-500 text-sm">
-        <p>Scott's Weather API v1.0.0</p>
-      </footer>
+      <!-- Loading Spinner -->
+      <div
+        id="loadingSpinner"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+      >
+        <div class="text-center">
+          <div
+            class="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-400 mb-4"
+          ></div>
+          <p class="text-gray-300 text-lg">Loading weather data...</p>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div
+        id="errorMessage"
+        class="hidden fixed top-4 right-4 bg-red-900/90 border border-red-600 text-white px-6 py-4 rounded-lg shadow-2xl z-50"
+      >
+        <p class="font-semibold">Error loading weather data</p>
+        <p class="text-sm text-gray-300 mt-1" id="errorText">
+          Please check your API endpoint
+        </p>
+      </div>
     </div>
+
+    <script>
+      // API Configuration
+      const API_URL = "http://andre:4000/api/full";
+      const API_KEY =
+        "sk_32302a2b833e44b4b108ac67696736939ca383004cb3d0e5da34f37c293c5192"; // Replace with your actual API key
+
+      // Update interval (5 minutes in milliseconds)
+      const UPDATE_INTERVAL = 5 * 60 * 1000;
+
+      // Fetch and display weather data
+      async function fetchWeatherData() {
+        try {
+          const response = await fetch(API_URL, {
+            headers: {
+              "X-API-Key": API_KEY,
+            },
+          });
+          if (!response.ok)
+            throw new Error(
+              `Failed to fetch weather data: ${response.status} ${response.statusText}`
+            );
+
+          const result = await response.json();
+          const data = result.data;
+
+          updateCurrentWeather(data);
+          updateHourlyForecast(data);
+          updateLastUpdated(result.timestamp);
+          updatePageTitle(data);
+
+          hideLoading();
+        } catch (error) {
+          console.error("Error fetching weather:", error);
+          showError(error.message);
+          hideLoading();
+        }
+      }
+
+      function updateCurrentWeather(data) {
+        const current = data.current;
+        const location =
+          data.location || `${data.lat.toFixed(2)}°, ${data.lon.toFixed(2)}°`;
+
+        document.getElementById("location").textContent = location;
+        document.getElementById("currentTemp").textContent =
+          Math.round(current.temp) + "°";
+        document.getElementById("feelsLike").textContent =
+          Math.round(current.feels_like) + "°";
+        document.getElementById("weatherDesc").textContent =
+          current.weather[0].description;
+        document.getElementById("weatherMain").textContent =
+          current.weather[0].main;
+
+        const iconImg = document.getElementById("currentIcon");
+        iconImg.src = `https://openweathermap.org/img/wn/${current.weather[0].icon}@4x.png`;
+        iconImg.alt = current.weather[0].description;
+        document.getElementById("currentIconTooltip").textContent =
+          current.weather[0].description.charAt(0).toUpperCase() +
+          current.weather[0].description.slice(1);
+
+        document.getElementById("humidity").textContent =
+          current.humidity + "%";
+        document.getElementById("windSpeed").textContent =
+          current.wind_speed.toFixed(1) + " mph";
+        document.getElementById("pressure").textContent =
+          current.pressure + " hPa";
+        document.getElementById("visibility").textContent =
+          (current.visibility / 1609.34).toFixed(1) + " mi";
+      }
+
+      function updateHourlyForecast(data) {
+        const hourlyContainer = document.getElementById("hourlyForecast");
+        hourlyContainer.innerHTML = "";
+
+        // Get next 12 hours
+        const next12Hours = data.hourly.slice(1, 13);
+
+        next12Hours.forEach((hour) => {
+          const time = new Date(hour.dt * 1000);
+          const timeString = time.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            hour12: true,
+          });
+
+          const card = document.createElement("div");
+          card.className =
+            "bg-white/5 rounded-xl p-4 border border-white/5 text-center hover:bg-white/10 transition-colors";
+          card.innerHTML = `
+                    <div class="text-sm text-gray-400 mb-2">${timeString}</div>
+                    <div class="relative group inline-block">
+                      <img src="https://openweathermap.org/img/wn/${
+                        hour.weather[0].icon
+                      }@2x.png" 
+                           alt="${hour.weather[0].description}" 
+                           class="w-12 h-12 mx-auto mb-2 cursor-help">
+                      <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        ${
+                          hour.weather[0].description.charAt(0).toUpperCase() +
+                          hour.weather[0].description.slice(1)
+                        }
+                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
+                      </div>
+                    </div>
+                    <div class="text-2xl font-light text-white mb-1">${Math.round(
+                      hour.temp
+                    )}°</div>
+                    <div class="text-xs text-gray-500 capitalize">${
+                      hour.weather[0].main
+                    }</div>
+                    <div class="text-xs text-gray-600 mt-2">
+                        <div>💧 ${hour.humidity}%</div>
+                        <div class="mt-1">💨 ${hour.wind_speed.toFixed(
+                          0
+                        )} mph</div>
+                    </div>
+                `;
+          hourlyContainer.appendChild(card);
+        });
+      }
+
+      function updatePageTitle(data) {
+        const location =
+          data.location || `${data.lat.toFixed(2)}°, ${data.lon.toFixed(2)}°`;
+        const temp = Math.round(data.current.temp);
+        const condition = data.current.weather[0].main;
+        document.title = `${temp}° ${condition} - ${location}`;
+      }
+
+      function updateLastUpdated(timestamp) {
+        document.getElementById(
+          "lastUpdated"
+        ).textContent = `Last updated: ${timestamp.display}`;
+      }
+
+      function hideLoading() {
+        document.getElementById("loadingSpinner").classList.add("hidden");
+      }
+
+      function showError(message) {
+        const errorDiv = document.getElementById("errorMessage");
+        document.getElementById("errorText").textContent = message;
+        errorDiv.classList.remove("hidden");
+        setTimeout(() => {
+          errorDiv.classList.add("hidden");
+        }, 5000);
+      }
+
+      // Initial load
+      fetchWeatherData();
+
+      // Set up auto-refresh every 5 minutes
+      setInterval(fetchWeatherData, UPDATE_INTERVAL);
+    </script>
   </body>
 </html>
