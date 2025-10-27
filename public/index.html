@@ -376,6 +376,13 @@ npm start</code></pre>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
+                >timestamp</code
+              >
+              - Request timestamp (display & ISO format)
+            </li>
+            <li>
+              <code
+                class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
                 >location</code
               >
               - Location name
@@ -383,44 +390,44 @@ npm start</code></pre>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >current.temp</code
+                >data.current.temp</code
               >
               - Current temperature
             </li>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >current.feels_like</code
+                >data.current.feels_like</code
               >
               - Feels like temperature
             </li>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >current.humidity</code
+                >data.current.humidity</code
               >
               - Humidity percentage
             </li>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >current.wind_speed</code
+                >data.current.wind_speed</code
               >
               - Wind speed
             </li>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >current.weather</code
+                >data.current.weather</code
               >
               - Weather description
             </li>
             <li>
               <code
                 class="bg-slate-bg px-1 border border-slate-border rounded text-slate-accent"
-                >forecast</code
+                >data.alerts</code
               >
-              - Simplified forecast array
+              - Weather alerts array
             </li>
           </ul>
 
@@ -461,15 +468,39 @@ npm start</code></pre>
           <pre
             class="bg-slate-bg border-2 border-slate-border p-4 overflow-x-auto rounded"
           ><code class="text-slate-text">{
-  "location": "New York City",
-  "current": {
-    "temp": 72,
-    "feels_like": 70,
-    "humidity": 65,
-    "wind_speed": 8.5,
-    "weather": "Clear"
+  "timestamp": {
+    "display": "Sun, Oct 26, 2025, 4:51 PM EDT",
+    "iso": "2025-10-26T20:51:56.000Z"
   },
-  "forecast": [...]
+  "data": {
+    "lat": 40.7128,
+    "lon": -74.0060,
+    "timezone": "America/New_York",
+    "timezone_offset": -14400,
+    "current": {
+      "dt": 1761511916,
+      "sunrise": 1761479931,
+      "sunset": 1761518035,
+      "temp": 54.46,
+      "feels_like": 51.67,
+      "pressure": 1028,
+      "humidity": 44,
+      "dew_point": 33.03,
+      "uvi": 0.69,
+      "clouds": 0,
+      "visibility": 10000,
+      "wind_speed": 11.5,
+      "wind_deg": 70,
+      "weather": {
+        "id": 800,
+        "main": "Clear",
+        "description": "clear sky",
+        "icon": "01d"
+      }
+    },
+    "alerts": []
+  },
+  "location": "New York City"
 }</code></pre>
         </div>
 

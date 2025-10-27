@@ -39,9 +39,62 @@ NODE_ENV=development # enables localhost:4000 CORS
 
 Returns simplified weather data with essential fields only.
 
-### GET `/api/full`
+### GET `/api/`
 
-Returns complete weather data including all available fields from the cache.
+Returns simplified weather data with essential fields only.
+
+**Query Parameters (Optional):**
+
+- `lat` - Latitude (-90 to 90)
+- `lon` - Longitude (-180 to 180)
+- `location` - Custom location label
+
+**Example Request:**
+
+```bash
+curl -H "X-API-Key: your-api-key" \
+  "http://your-server:4000/api/?lat=40.7128&lon=-74.0060&location=New%20York"
+```
+
+**Example Response:**
+
+```json
+{
+  "timestamp": {
+    "display": "Sun, Oct 26, 2025, 4:51 PM EDT",
+    "iso": "2025-10-26T20:51:56.000Z"
+  },
+  "data": {
+    "lat": 40.7128,
+    "lon": -74.006,
+    "timezone": "America/New_York",
+    "timezone_offset": -14400,
+    "current": {
+      "dt": 1761511916,
+      "sunrise": 1761479931,
+      "sunset": 1761518035,
+      "temp": 54.46,
+      "feels_like": 51.67,
+      "pressure": 1028,
+      "humidity": 44,
+      "dew_point": 33.03,
+      "uvi": 0.69,
+      "clouds": 0,
+      "visibility": 10000,
+      "wind_speed": 11.5,
+      "wind_deg": 70,
+      "weather": {
+        "id": 800,
+        "main": "Clear",
+        "description": "clear sky",
+        "icon": "01d"
+      }
+    },
+    "alerts": []
+  },
+  "location": "New York City"
+}
+```
 
 ## Authentication
 
