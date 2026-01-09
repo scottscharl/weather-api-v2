@@ -1,17 +1,65 @@
 {
-  "name": "weather-api",
+  "name": "@scottscharl/weather-api",
   "version": "1.0.0",
-  "description": "get weather for a location",
-  "main": "server.js",
+  "description": "A configurable weather API server with caching, security features, and OpenWeatherMap integration",
+  "main": "index.js",
+  "bin": {
+    "weather-api": "bin/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.js"
+    },
+    "./server": "./server.js",
+    "./config": "./config.js"
+  },
+  "files": [
+    "index.js",
+    "server.js",
+    "config.js",
+    "utils/",
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "audit": "npm audit",
-    "security-check": "npm audit && npm outdated"
+    "security-check": "npm audit",
+    "prepare": "npm run security-check",
+    "prepublishOnly": "npm pack --dry-run"
   },
-  "author": "Scott Scharl",
+  "keywords": [
+    "weather",
+    "api",
+    "openweathermap",
+    "express",
+    "cache",
+    "server",
+    "nodejs",
+    "rest-api",
+    "weather-data"
+  ],
+  "author": {
+    "name": "Scott Scharl",
+    "email": "scott@example.com"
+  },
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottscharl/weather-api-v3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scottscharl/weather-api-v3/issues"
+  },
+  "homepage": "https://github.com/scottscharl/weather-api-v3#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -20,5 +68,8 @@
     "geocodio-library-node": "^1.6.1",
     "helmet": "^8.1.0",
     "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }

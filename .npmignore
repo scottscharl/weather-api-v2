@@ -1,0 +1,44 @@
+# Development files
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Cache and logs
+cache/
+*.log
+server.log
+
+# Development configs
+nodemon.json
+ecosystem.config.js
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
+coverage/
+
+# Documentation drafts
+docs/
+CHANGELOG.md
+
+# Temporary files
+tmp/
+temp/
+.tmp

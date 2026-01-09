@@ -1,15 +1,14 @@
-const dotenv = require("dotenv");
 const path = require("path");
 const cron = require("node-cron");
-dotenv.config({ path: path.resolve(__dirname, "./.env") });
+const { loadConfig } = require("./config");
+
+// Load configuration
+const config = loadConfig();
 
 // Validate required environment variables
-const requiredEnvVars = ["OPENWEATHER_KEY", "LATITUDE", "LONGITUDE", "LOCATION_NAME"];
-const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
-
-if (missingEnvVars.length > 0) {
-  console.error("❌ Missing required environment variables:", missingEnvVars.join(", "));
-  console.error("Please check your .env file and ensure all required variables are set.");
+if (!config.openWeatherKey) {
+  console.error("❌ Missing required environment variable: OPENWEATHER_KEY");
+  console.error("Please check your .env file and ensure OPENWEATHER_KEY is set.");
   process.exit(1);
 }
 
@@ -17,31 +16,30 @@ const express = require("express");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
 const helmet = require("helmet");
-const { getSecurityConfig, logSecurityConfig } = require("./utils/securityConfig");
 
 const app = express();
-const port = process.env.PORT || 3000;
-
-// Get security configuration
-const securityConfig = getSecurityConfig();
+const port = config.server.port;
 
 // Security middleware
-if (securityConfig.helmet !== false) {
-  app.use(helmet(securityConfig.helmet));
+if (config.security.helmet.enabled) {
+  app.use(helmet());
 }
 
-if (securityConfig.cors !== false) {
-  app.use(cors(securityConfig.cors));
+if (config.security.cors.enabled) {
+  const corsOptions = {
+    origin: config.security.cors.origins === '*' ? true : config.security.cors.origins
+  };
+  app.use(cors(corsOptions));
 }
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: securityConfig.rateLimit.windowMs,
-  max: securityConfig.rateLimit.max,
+  windowMs: config.security.rateLimit.windowMinutes * 60 * 1000,
+  max: config.security.rateLimit.maxRequests,
   message: {
     error: "Too many requests",
-    message: securityConfig.rateLimit.message,
-    retryAfter: Math.ceil(securityConfig.rateLimit.windowMs / 1000)
+    message: config.security.rateLimit.message,
+    retryAfter: config.security.rateLimit.windowMinutes * 60
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -51,14 +49,16 @@ app.use(limiter);
 const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
-const { lat, lon } = require("./data/coordinates.js");
+// Use coordinates from config
+const lat = config.location.latitude;
+const lon = config.location.longitude;
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // Initial cache update when server starts
 console.log(`${new Date().toISOString()} - Running initial cache update...`);
-updateWeatherCache({ lat, lon }).catch((err) => {
+updateWeatherCache({ lat, lon, apiKey: config.openWeatherKey }).catch((err) => {
   console.error(`${new Date().toISOString()} - Initial cache update failed:`, err);
 });
 
@@ -66,7 +66,7 @@ updateWeatherCache({ lat, lon }).catch((err) => {
 cron.schedule("*/5 * * * *", async () => {
   console.log(`${new Date().toISOString()} - Running scheduled weather cache update...`);
   try {
-    await updateWeatherCache({ lat, lon });
+    await updateWeatherCache({ lat, lon, apiKey: config.openWeatherKey });
   } catch (err) {
     console.error(`${new Date().toISOString()} - Cron job failed:`, err);
   }
@@ -119,6 +119,15 @@ app.get("/api/full", (_req, res) => {
 
 app.listen(port, () => {
   console.log(`${new Date().toISOString()} - Weather API server listening on http://localhost:${port}`);
-  console.log(`Location: ${process.env.LOCATION_NAME} (${lat}, ${lon})`);
-  logSecurityConfig(securityConfig);
+  console.log(`Location: ${config.location.name} (${lat}, ${lon})`);
+  console.log(`${new Date().toISOString()} - Security Configuration:`);
+  console.log(`  Rate Limiting: ${config.security.rateLimit.maxRequests} requests per ${config.security.rateLimit.windowMinutes} minutes`);
+  console.log(`  CORS: Allowed origins: ${Array.isArray(config.security.cors.origins) ? config.security.cors.origins.join(", ") : config.security.cors.origins}`);
+  console.log(`  Security Headers: ${config.security.helmet.enabled ? "Enabled" : "Disabled"}`);
+  console.log(`  Security Profile: ${config.security.profile}`);
+  
+  if (config.security.profile === 'development' && config.security.rateLimit.maxRequests > 500) {
+    console.log(`  Security Warnings:`);
+    console.log(`    ⚠️  High rate limit detected. Consider lowering for production.`);
+  }
 });
