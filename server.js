@@ -14,8 +14,40 @@ if (missingEnvVars.length > 0) {
 }
 
 const express = require("express");
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
+const helmet = require("helmet");
+const { getSecurityConfig, logSecurityConfig } = require("./utils/securityConfig");
+
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Get security configuration
+const securityConfig = getSecurityConfig();
+
+// Security middleware
+if (securityConfig.helmet !== false) {
+  app.use(helmet(securityConfig.helmet));
+}
+
+if (securityConfig.cors !== false) {
+  app.use(cors(securityConfig.cors));
+}
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: securityConfig.rateLimit.windowMs,
+  max: securityConfig.rateLimit.max,
+  message: {
+    error: "Too many requests",
+    message: securityConfig.rateLimit.message,
+    retryAfter: Math.ceil(securityConfig.rateLimit.windowMs / 1000)
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(limiter);
 const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
@@ -88,4 +120,5 @@ app.get("/api/full", (_req, res) => {
 app.listen(port, () => {
   console.log(`${new Date().toISOString()} - Weather API server listening on http://localhost:${port}`);
   console.log(`Location: ${process.env.LOCATION_NAME} (${lat}, ${lon})`);
+  logSecurityConfig(securityConfig);
 });

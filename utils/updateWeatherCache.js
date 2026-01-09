@@ -1,8 +1,16 @@
 const fs = require("fs");
 const path = require("path");
-const dataDir = path.join(__dirname, "../cache");
+
+// Secure cache directory setup
+const dataDir = path.resolve(__dirname, "../cache");
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir);
+  fs.mkdirSync(dataDir, { recursive: true, mode: 0o755 });
+}
+
+// Validate cache directory is within project bounds
+const projectRoot = path.resolve(__dirname, "..");
+if (!dataDir.startsWith(projectRoot)) {
+  throw new Error("Cache directory path traversal detected");
 }
 const getWeather = require("./getWeather.js");
 const location = process.env.LOCATION_NAME;
