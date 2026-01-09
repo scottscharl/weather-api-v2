@@ -2,6 +2,17 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cron = require("node-cron");
 dotenv.config({ path: path.resolve(__dirname, "./.env") });
+
+// Validate required environment variables
+const requiredEnvVars = ["OPENWEATHER_KEY", "LATITUDE", "LONGITUDE", "LOCATION_NAME"];
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+  console.error("❌ Missing required environment variables:", missingEnvVars.join(", "));
+  console.error("Please check your .env file and ensure all required variables are set.");
+  process.exit(1);
+}
+
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,47 +25,67 @@ const { lat, lon } = require("./data/coordinates.js");
 app.use(express.static(path.join(__dirname, "public")));
 
 // Initial cache update when server starts
-console.log("Running initial cache update...");
+console.log(`${new Date().toISOString()} - Running initial cache update...`);
 updateWeatherCache({ lat, lon }).catch((err) => {
-  console.log("Initial cache update failed:", err);
+  console.error(`${new Date().toISOString()} - Initial cache update failed:`, err);
 });
 
 // Schedule weather data cache updates every 5 min
 cron.schedule("*/5 * * * *", async () => {
-  console.log("Running scheduled weather cache update...");
+  console.log(`${new Date().toISOString()} - Running scheduled weather cache update...`);
   try {
     await updateWeatherCache({ lat, lon });
   } catch (err) {
-    console.error("Cron job failed:", err);
+    console.error(`${new Date().toISOString()} - Cron job failed:`, err);
   }
 });
 
-app.get("/api/", async (req, res) => {
+app.get("/api/", (_req, res) => {
   try {
-    // get weather data by sending lat. & lon. to OpenWeatherAPI's One Call API 3.0
-
     const weatherData = loadWeatherDataFromCache();
+    
+    if (!weatherData) {
+      return res.status(503).json({
+        error: "Weather data unavailable",
+        message: "Weather cache is empty. Please try again in a few minutes."
+      });
+    }
+    
     const simpleWeatherData = simplifyWeatherData(weatherData);
     res.setHeader("Content-Type", "application/json");
     res.json(simpleWeatherData);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error processing request: " + err.message);
+    console.error("API error:", err);
+    res.status(500).json({
+      error: "Internal server error",
+      message: "Failed to process weather data"
+    });
   }
 });
 
-app.get("/api/full", async (req, res) => {
+app.get("/api/full", (_req, res) => {
   try {
-    // get weather data by sending lat. & lon. to OpenWeatherAPI's One Call API 3.0
     const weatherData = loadWeatherDataFromCache();
+    
+    if (!weatherData) {
+      return res.status(503).json({
+        error: "Weather data unavailable",
+        message: "Weather cache is empty. Please try again in a few minutes."
+      });
+    }
+    
     res.setHeader("Content-Type", "application/json");
     res.json(weatherData);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error processing request: " + err.message);
+    console.error("API error:", err);
+    res.status(500).json({
+      error: "Internal server error",
+      message: "Failed to process weather data"
+    });
   }
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+  console.log(`${new Date().toISOString()} - Weather API server listening on http://localhost:${port}`);
+  console.log(`Location: ${process.env.LOCATION_NAME} (${lat}, ${lon})`);
 });

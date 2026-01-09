@@ -3,7 +3,6 @@ const path = require("path");
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 async function getWeather({ lat, lon }) {
-  // Changed to correct endpoint
   const baseUrl = `https://api.openweathermap.org/data/3.0/onecall?`;
 
   try {
@@ -12,11 +11,16 @@ async function getWeather({ lat, lon }) {
       `lon=${lon}`,
       `appid=${process.env.OPENWEATHER_KEY}`,
       `units=imperial`,
-      // `exclude=minutely,alerts`, // Optional: exclude data we don't need
     ].join("&");
 
-    // console.log("Making request to:", baseUrl + queryParams);
-    const res = await fetch(baseUrl + queryParams);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const res = await fetch(baseUrl + queryParams, {
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -28,6 +32,10 @@ async function getWeather({ lat, lon }) {
     const data = await res.json();
     return data;
   } catch (error) {
+    if (error.name === 'AbortError') {
+      console.error('Weather API request timed out');
+      throw new Error('Weather API request timed out');
+    }
     console.error("Error fetching weather data:", error);
     throw error;
   }

@@ -1,4 +1,3 @@
-const loadWeatherDataFromCache = require("./loadWeatherDataFromCache");
 
 function simplifyWeatherData(weatherData) {
   // Extract essential and additional data from the input

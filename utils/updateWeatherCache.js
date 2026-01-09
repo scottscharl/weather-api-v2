@@ -5,12 +5,14 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
 const getWeather = require("./getWeather.js");
-const location = process.env("");
+const location = process.env.LOCATION_NAME;
 
 async function updateWeatherCache({ lat, lon }) {
   try {
     const weatherData = await getWeather({ lat, lon });
     const filePath = path.join(dataDir, "weatherData.json");
+    const tempFilePath = path.join(dataDir, "weatherData.temp.json");
+    
     const date = new Date(weatherData.current.dt * 1000);
     const timestamp = {
       display: new Intl.DateTimeFormat("en-US", {
@@ -22,21 +24,25 @@ async function updateWeatherCache({ lat, lon }) {
         hour: "numeric",
         minute: "2-digit",
         timeZoneName: "short",
-      }).format(date), // Thu, Feb 15, 2024, 7:34 AM EST
-      iso: date.toISOString(), // 2024-02-15T12:34:56.789Z
+      }).format(date),
+      iso: date.toISOString(),
+      lastUpdated: Date.now() // Add timestamp for cache age validation
+    };
+
+    const cacheData = {
+      timestamp,
+      location: location || "Unknown Location",
+      data: weatherData
     };
 
     // Convert to JSON string with pretty formatting
-    const jsonData = JSON.stringify(
-      { timestamp, location, data: weatherData },
-      null,
-      2
-    );
+    const jsonData = JSON.stringify(cacheData, null, 2);
 
-    // Write to file
-    fs.writeFileSync(filePath, jsonData);
+    // Atomic write: write to temp file first, then rename
+    fs.writeFileSync(tempFilePath, jsonData);
+    fs.renameSync(tempFilePath, filePath);
+    
     console.log(`✅ Weather data saved to: ${filePath}`);
-
     return weatherData;
   } catch (error) {
     console.error(`❌ Error saving weather data:`, error);
@@ -44,7 +50,5 @@ async function updateWeatherCache({ lat, lon }) {
   }
 }
 
-// test
-// updateWeatherCache();
 
 module.exports = updateWeatherCache;
