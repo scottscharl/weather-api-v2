@@ -2,24 +2,11 @@
   "name": "@scottscharl/weather-api",
   "version": "2.0.0",
   "description": "Simple Node weather API server that caches OpenWeatherMap data.",
-  "main": "index.js",
-  "bin": {
-    "weather-api": "bin/cli.js"
-  },
-  "exports": {
-    ".": {
-      "import": "./index.js",
-      "require": "./index.js"
-    },
-    "./server": "./server.js",
-    "./config": "./config.js"
-  },
+  "main": "server.js",
   "files": [
-    "index.js",
     "server.js",
     "config.js",
     "utils/",
-    "bin/",
     "README.md",
     "LICENSE"
   ],
