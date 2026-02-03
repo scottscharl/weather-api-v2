@@ -2,7 +2,6 @@ const config = {
   // Default server configuration
   server: {
     port: 4000,
-    nodeEnv: "development", // 'production' or 'strict'
   },
 
   // Default location configuration (can be overridden by env vars)
@@ -12,52 +11,11 @@ const config = {
     name: "Washington, DC",
   },
 
-  // Security profiles with different configurations
-  security: {
-    profiles: {
-      development: {
-        rateLimit: {
-          windowMinutes: 60,
-          maxRequests: 1000,
-          message: "Too many requests from this IP, please try again later.",
-        },
-        cors: {
-          enabled: true,
-          origins: ["http://localhost:3000", "http://localhost:4000"],
-        },
-        helmet: {
-          enabled: true,
-        },
-      },
-      production: {
-        rateLimit: {
-          windowMinutes: 60,
-          maxRequests: 100,
-          message: "Too many requests from this IP, please try again later.",
-        },
-        cors: {
-          enabled: true,
-          origins: [], // Should be set via environment variables
-        },
-        helmet: {
-          enabled: true,
-        },
-      },
-      strict: {
-        rateLimit: {
-          windowMinutes: 60,
-          maxRequests: 50,
-          message: "Too many requests from this IP, please try again later.",
-        },
-        cors: {
-          enabled: true,
-          origins: [], // Should be set via environment variables
-        },
-        helmet: {
-          enabled: true,
-        },
-      },
-    },
+  // Rate limiting defaults
+  rateLimit: {
+    windowMinutes: 60,
+    maxRequests: 100,
+    message: "Too many requests from this IP, please try again later.",
   },
 };
 
@@ -65,19 +23,14 @@ const config = {
 function loadConfig() {
   require("dotenv").config();
 
-  const securityProfile = process.env.SECURITY_PROFILE || "development";
-  const profile =
-    config.security.profiles[securityProfile] ||
-    config.security.profiles.development;
-
   return {
     // API Configuration
     openWeatherKey: process.env.OPENWEATHER_KEY,
+    apiKey: process.env.API_KEY,
 
     // Server Configuration
     server: {
       port: parseInt(process.env.PORT) || config.server.port,
-      nodeEnv: process.env.NODE_ENV || config.server.nodeEnv,
     },
 
     // Location Configuration
@@ -87,30 +40,15 @@ function loadConfig() {
       name: process.env.LOCATION_NAME || config.location.name,
     },
 
-    // Security Configuration
-    security: {
-      profile: securityProfile,
-      rateLimit: {
-        windowMinutes:
-          parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES) ||
-          profile.rateLimit.windowMinutes,
-        maxRequests:
-          parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) ||
-          profile.rateLimit.maxRequests,
-        message: process.env.RATE_LIMIT_MESSAGE || profile.rateLimit.message,
-      },
-      cors: {
-        enabled: process.env.CORS_ENABLED !== "false" && profile.cors.enabled,
-        origins: process.env.CORS_ORIGIN
-          ? process.env.CORS_ORIGIN === "*"
-            ? "*"
-            : process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
-          : profile.cors.origins,
-      },
-      helmet: {
-        enabled:
-          process.env.HELMET_ENABLED !== "false" && profile.helmet.enabled,
-      },
+    // Rate Limiting Configuration
+    rateLimit: {
+      windowMinutes:
+        parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES) ||
+        config.rateLimit.windowMinutes,
+      maxRequests:
+        parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) ||
+        config.rateLimit.maxRequests,
+      message: process.env.RATE_LIMIT_MESSAGE || config.rateLimit.message,
     },
   };
 }

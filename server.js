@@ -14,38 +14,42 @@ if (!config.openWeatherKey) {
 
 const express = require("express");
 const rateLimit = require("express-rate-limit");
-const cors = require("cors");
-const helmet = require("helmet");
 
 const app = express();
 const port = config.server.port;
 
-// Security middleware
-if (config.security.helmet.enabled) {
-  app.use(helmet());
-}
-
-if (config.security.cors.enabled) {
-  const corsOptions = {
-    origin: config.security.cors.origins === '*' ? true : config.security.cors.origins
-  };
-  app.use(cors(corsOptions));
-}
-
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: config.security.rateLimit.windowMinutes * 60 * 1000,
-  max: config.security.rateLimit.maxRequests,
+  windowMs: config.rateLimit.windowMinutes * 60 * 1000,
+  max: config.rateLimit.maxRequests,
   message: {
     error: "Too many requests",
-    message: config.security.rateLimit.message,
-    retryAfter: config.security.rateLimit.windowMinutes * 60
+    message: config.rateLimit.message,
+    retryAfter: config.rateLimit.windowMinutes * 60
   },
   standardHeaders: true,
   legacyHeaders: false,
 });
 
 app.use(limiter);
+
+// API key authentication
+const apiKeyAuth = (req, res, next) => {
+  if (!config.apiKey) {
+    return next(); // No API key configured, allow all requests
+  }
+
+  const providedKey = req.headers['x-api-key'];
+  if (providedKey === config.apiKey) {
+    return next();
+  }
+
+  return res.status(401).json({
+    error: "Unauthorized",
+    message: "Invalid or missing API key"
+  });
+};
+
 const loadWeatherDataFromCache = require("./utils/loadWeatherDataFromCache.js");
 const updateWeatherCache = require("./utils/updateWeatherCache.js");
 const simplifyWeatherData = require("./utils/simplifyWeatherData.js");
@@ -72,17 +76,17 @@ cron.schedule("*/5 * * * *", async () => {
   }
 });
 
-app.get("/api/", (_req, res) => {
+app.get("/api/", apiKeyAuth, (_req, res) => {
   try {
     const weatherData = loadWeatherDataFromCache();
-    
+
     if (!weatherData) {
       return res.status(503).json({
         error: "Weather data unavailable",
         message: "Weather cache is empty. Please try again in a few minutes."
       });
     }
-    
+
     const simpleWeatherData = simplifyWeatherData(weatherData);
     res.setHeader("Content-Type", "application/json");
     res.json(simpleWeatherData);
@@ -95,17 +99,17 @@ app.get("/api/", (_req, res) => {
   }
 });
 
-app.get("/api/full", (_req, res) => {
+app.get("/api/full", apiKeyAuth, (_req, res) => {
   try {
     const weatherData = loadWeatherDataFromCache();
-    
+
     if (!weatherData) {
       return res.status(503).json({
         error: "Weather data unavailable",
         message: "Weather cache is empty. Please try again in a few minutes."
       });
     }
-    
+
     res.setHeader("Content-Type", "application/json");
     res.json(weatherData);
   } catch (err) {
@@ -120,14 +124,6 @@ app.get("/api/full", (_req, res) => {
 app.listen(port, () => {
   console.log(`${new Date().toISOString()} - Weather API server listening on http://localhost:${port}`);
   console.log(`Location: ${config.location.name} (${lat}, ${lon})`);
-  console.log(`${new Date().toISOString()} - Security Configuration:`);
-  console.log(`  Rate Limiting: ${config.security.rateLimit.maxRequests} requests per ${config.security.rateLimit.windowMinutes} minutes`);
-  console.log(`  CORS: Allowed origins: ${Array.isArray(config.security.cors.origins) ? config.security.cors.origins.join(", ") : config.security.cors.origins}`);
-  console.log(`  Security Headers: ${config.security.helmet.enabled ? "Enabled" : "Disabled"}`);
-  console.log(`  Security Profile: ${config.security.profile}`);
-  
-  if (config.security.profile === 'development' && config.security.rateLimit.maxRequests > 500) {
-    console.log(`  Security Warnings:`);
-    console.log(`    ⚠️  High rate limit detected. Consider lowering for production.`);
-  }
+  console.log(`Rate Limiting: ${config.rateLimit.maxRequests} requests per ${config.rateLimit.windowMinutes} minutes`);
+  console.log(`API Key Auth: ${config.apiKey ? "Enabled" : "Disabled"}`);
 });

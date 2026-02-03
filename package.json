@@ -1,7 +1,7 @@
 {
   "name": "@scottscharl/weather-api",
-  "version": "1.0.0",
-  "description": "A configurable weather API server with caching, security features, and OpenWeatherMap integration",
+  "version": "2.0.0",
+  "description": "Simple Node weather API server that caches OpenWeatherMap data.",
   "main": "index.js",
   "bin": {
     "weather-api": "bin/cli.js"
@@ -61,12 +61,9 @@
     "npm": ">=7.0.0"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
-    "geocodio-library-node": "^1.6.1",
-    "helmet": "^8.1.0",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {

@@ -6,11 +6,11 @@ const simplifyWeatherData = require('./utils/simplifyWeatherData');
 class WeatherAPI {
   constructor(options = {}) {
     this.config = loadConfig();
-    
+
     // Override config with provided options
     if (options.openWeatherKey) this.config.openWeatherKey = options.openWeatherKey;
     if (options.location) Object.assign(this.config.location, options.location);
-    if (options.security) Object.assign(this.config.security, options.security);
+    if (options.apiKey) this.config.apiKey = options.apiKey;
   }
 
   /**
