@@ -19,6 +19,12 @@ const config = {
   },
 };
 
+// Two decimals is about 1 km: same weather, but the public API doesn't
+// pinpoint a house. OpenWeather echoes back whatever coordinates we send.
+function roundCoord(n) {
+  return Math.round(n * 100) / 100;
+}
+
 // Load environment variables and merge with defaults
 function loadConfig() {
   require("dotenv").config();
@@ -35,8 +41,12 @@ function loadConfig() {
 
     // Location Configuration
     location: {
-      latitude: parseFloat(process.env.LATITUDE) || config.location.latitude,
-      longitude: parseFloat(process.env.LONGITUDE) || config.location.longitude,
+      latitude: roundCoord(
+        parseFloat(process.env.LATITUDE) || config.location.latitude,
+      ),
+      longitude: roundCoord(
+        parseFloat(process.env.LONGITUDE) || config.location.longitude,
+      ),
       name: process.env.LOCATION_NAME || config.location.name,
     },
 
